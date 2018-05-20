@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+>
+    <ui:param
+        name="customerCheckingOut"
+        value="#{customer.getByName(customer.name)}"
+    />
+    <ui:param name="cName" value="#{customerCheckingOut.name}"/>
+    
+    <ui:param name="checkOutDate" value="#{reservation.checkedOut}"/>
+    <!--
+        reservation.get cannot be passed customer.name. Otherwise, variable r
+        will be set as a customer for some disgusting reason.
+    -->
+    <ui:param name="r" value="#{reservation.getByName(cName)}"/>
+    
+    <title>Check Out Customer</title>
+
+    <c:if test="#{empty r}">
+        <h:head>
+            <link
+                href="css/stylesheet.css"
+                rel="stylesheet"
+                type="text/css"
+            />
+            <h1>
+                This customer has not made a reservation, not checked in,
+                or has already checked out.
+            </h1>
+        </h:head>
+        
+        <h:body>
+            <h:form>
+                <h:commandButton
+                    value="Return to Employee Page"
+                    action="startEmployee"
+                />
+            </h:form>
+        </h:body>
+    </c:if>
+        
+    <c:otherwise>
+        <!--
+            ui:param variables can only be used once. Once they are used,
+            the variable is trashed.
+        -->
+        <ui:param name="rID" value="#{r.reservationId}"/>
+        #{transaction.create(customerCheckingOut, rID, checkOutDate, r.total)}
+        
+        <h:head>
+            <link
+                href="css/stylesheet.css"
+                rel="stylesheet"
+                type="text/css"
+            />
+            <h1>
+                The customer is now checked out and has been charged a
+                reservation fee of $#{r.checkOut(rID, checkOutDate)}.
+            </h1>
+        </h:head>
+        <h:body>
+            <h:form>
+                <h:commandButton
+                    value="Return to Employee Page"
+                    action="startEmployee"
+                />
+            </h:form>
+        </h:body>
+    </c:otherwise>
+</html>

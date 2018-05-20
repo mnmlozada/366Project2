@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:singleEmployee = "http://xmlns.jcp.org/jsf/composite/ezcomp">
+    <title>Room Prices Search</title>
+    <h:head>
+        <link href="css/stylesheet.css" rel="stylesheet" type="text/css" />
+        <h1>Room Prices Search</h1>
+    </h:head>
+
+    <h:body>
+        <h:form>
+            <h:panelGrid columns="3">
+                Date: <h:inputText value="#{rates.date}" required ="true"
+                                      requiredMessage="Your must enter a date"
+                                      converterMessage="Date must be entered as MM/DD/YYYY"
+                                      id="date">
+                    <f:convertDateTime pattern="MM/dd/yyyy"/>
+                </h:inputText>
+                <h:message for="date" style="color:red;margin:8px;"/>
+                </h:panelGrid>
+            <h:panelGrid>
+                <h:commandButton value="Go" action="#{rates.searchRates()}"/>
+            </h:panelGrid>
+        </h:form>
+    </h:body>
+</html>
+

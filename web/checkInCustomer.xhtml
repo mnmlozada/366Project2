@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+>
+    <ui:param
+        name="customerCheckingIn"
+        value="#{customer.getByName(customer.name)}"
+    />
+    <ui:param name="cName" value="#{customerCheckingIn.name}"/>
+    <!--
+        reservation.get cannot be passed customer.name. Otherwise, variable r
+        will be set as a customer for some disgusting reason.
+    -->
+    <ui:param name="r" value="#{reservation.getNextToCheckIn(cName)}"/>
+    
+    <title>Check In Customer</title>
+
+    <c:if test="#{empty r}">
+        <h:head>
+            <link 
+                href="css/stylesheet.css"
+                rel="stylesheet"
+                type="text/css" 
+            />
+            <h1>
+                This customer has already checked in, or has not made a
+                reservation.
+            </h1>
+        </h:head>
+        
+        <h:body>
+            <h:form>
+                <h:commandButton
+                    value="Return to Employee Page"
+                    action="startEmployee"
+                />
+            </h:form>
+        </h:body>
+    </c:if>
+    
+    <c:otherwise>
+        <ui:param name="rID" value="#{r.reservationId}"/>
+        <ui:param name="roomNum" value="#{r.checkIn(rID, r.startDate)}"/>
+            
+        <h:head>
+            <link
+                href="css/stylesheet.css"
+                rel="stylesheet"
+                type="text/css"
+            />
+            <h1>
+                The customer will pay a reservation fee of $#{r.total} when
+                checking out, and will be staying in room number #{roomNum}.
+            </h1>
+        </h:head>
+        
+        <h:body>
+            <h:form>
+                <h:commandButton
+                    value="Return to Employee Page"
+                    action="startEmployee"
+                />
+            </h:form>
+        </h:body>
+    </c:otherwise>
+</html>

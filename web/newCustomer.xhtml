@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <title>New Customer</title>
+    <h:head>
+        <link href="css/stylesheet.css" rel="stylesheet" type="text/css" />
+        <h1>New Customer</h1>
+    </h:head>
+    <h:body>
+        <h:form>
+            <h:panelGrid columns="3">
+                
+                Name: <h:inputText value="#{customer.name}" required ="true"
+                   requiredMessage="Your must enter Customer Name"
+                   id="userName"/>
+                <h:message for="userName" style="color:red;margin:8px;"/>
+
+                Address: <h:inputText value="#{customer.address}" required ="true"
+                                      requiredMessage="Your must enter Customer Address"
+                                      validatorMessage="Address must be at least five characters"
+                                      id="userAddress">
+                    <f:validateLength minimum="5"/>
+                </h:inputText>
+                <h:message for="userAddress" style="color:red;margin:8px;"/>
+                
+                Username: <h:inputText value="#{customer.username}" required ="true"
+                                   requiredMessage="Your must enter Customer Username"
+                                   validatorMessage="Username must be at least five characters"
+                                   id="userUsername">
+                    <f:validateLength minimum="5"/>
+                </h:inputText>
+                <h:message for="userUsername" style="color:red;margin:8px;"/>
+                
+                Password: <h:inputSecret value="#{customer.password}" required ="true"
+                                   requiredMessage="Your must enter Customer Password"
+                                   validatorMessage="Password must be at least eight characters"
+                                   id="userPassword">
+                    <f:validateLength minimum="8"/>
+                </h:inputSecret>
+                <h:message for="userPassword" style="color:red;margin:8px;"/>
+                
+                Email: <h:inputText value="#{customer.email}" required ="true"
+                                   requiredMessage="Your must enter Customer Email"
+                                   id="userEmail"/>
+                <h:message for="userEmail" style="color:red;margin:8px;"/>
+                
+                Credit Card Number: <h:inputText value="#{customer.cc_num}" required ="true"
+                                   requiredMessage="Your must enter Customer Credit Card Number"
+                                   validatorMessage="Credit Card Number must be 16 numbers"
+                                   id="userCCNum">
+                    <f:validateLength minimum="16" maximum="16"/>
+                    <f:validateRegex pattern="[0-9]*"/>
+                </h:inputText>
+                <h:message for="userCCNum" style="color:red;margin:8px;"/>
+                
+                Credit Card Expiration Date: <h:inputText value="#{customer.cc_exp}" required ="true"
+                                   requiredMessage="Your must enter Customer Credit Card Expiration Date"
+                                   validatorMessage="Credit Card Expiration Date must be in the format MM/YY"
+                                   id="userCCExpr">
+                    <f:convertDateTime pattern="mm/YY"/>
+                </h:inputText>
+                <h:message for="userCCExpr" style="color:red;margin:8px;"/>
+                
+                Credit Card CRC: <h:inputText value="#{customer.cc_crc}" required ="true"
+                                   requiredMessage="Your must enter Customer Credit Card CRC"
+                                   validatorMessage="Credit Card CRC must be 3 numbers"
+                                   id="userCCCRC">
+                    <f:validateLength minimum="3" maximum="3"/>
+                </h:inputText>
+                <h:message for="userCCCRC" style="color:red;margin:8px;"/>
+
+                <h:message for="userDate" style="color:red;margin:8px;"/>
+            </h:panelGrid>
+            <h:panelGrid>
+                <h:commandButton value="Go" action="#{customer.createCustomer}"/>
+            </h:panelGrid>
+        </h:form>
+    </h:body>
+</html>
+

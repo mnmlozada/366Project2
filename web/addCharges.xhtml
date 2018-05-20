@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+>
+    <ui:param
+        name="customerCharged"
+        value="#{customer.getByName(customer.name)}"
+    />
+    <ui:param name="cName" value="#{customerCharged.name}"/>
+    <!--
+        reservation.get cannot be passed customer.name. Otherwise, variable r
+        will be set as a customer for some disgusting reason.
+    -->
+    <ui:param name="r" value="#{reservation.getByName(cName)}"/>
+    
+    <title>Add Charges</title>
+
+    <c:choose>
+        <c:when test="#{empty r}">
+            <h:head>
+                <link 
+                    href="css/stylesheet.css"
+                    rel="stylesheet"
+                    type="text/css" 
+                />
+                <h1>
+                    This customer has not made a reservation, not checked in,
+                    or has already checked out.
+                </h1>
+            </h:head>
+            
+            <h:body>
+                <h:form>
+                    <h:commandButton
+                        value="Return to Employee Page"
+                        action="startEmployee"
+                    />
+                </h:form>
+            </h:body>
+        </c:when>
+        
+        <c:otherwise>
+            <ui:param name="rID" value="#{r.reservationId}"/>
+            #{transaction.create(customerCharged, rID, transaction.tranDate,
+              transaction.total)}
+            
+            <h:head>
+                <link
+                    href="css/stylesheet.css"
+                    rel="stylesheet"
+                    type="text/css"
+                />
+                <h1>
+                    The customer has been charged $#{transaction.total}.
+                </h1>
+            </h:head>
+            
+            <h:body>
+                <h:form>
+                    <h:commandButton
+                        value="Return to Employee Page"
+                        action="#{selectorEmployee.backToStart()}"
+                    />
+                </h:form>
+            </h:body>
+        </c:otherwise>
+    </c:choose>
+</html>

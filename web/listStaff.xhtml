@@ -5,29 +5,29 @@
       xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
         <link href="css/stylesheet.css" rel="stylesheet" type="text/css" />
-        <h1>View All Employees</h1>
+        <h1>View All Staff</h1>
     </h:head>
 
     <h:body>
-        <h:dataTable value="#{employee.adminGetEmployeeList()}" var="e" border="1">
+        <h:dataTable value="#{staff.adminGetStaffList()}" var="s" border="1">
             <h:column>
-                <f:facet name="header"> Employee ID </f:facet>
-                    #{e.employeeID}
+                <f:facet name="header"> Staff ID </f:facet>
+                    #{s.staffID}
             </h:column>
 
             <h:column>
                 <f:facet name="header"> Name </f:facet>
-                    #{e.name}
+                    #{s.name}
             </h:column>
             
             <h:column>
                 <f:facet name="header"> Username </f:facet>
-                    #{e.username}
+                    #{s.username}
             </h:column>
             
             <h:column>
                 <f:facet name="header"> Password </f:facet>
-                    #{e.password}
+                    #{s.password}
             </h:column>
 
         </h:dataTable>

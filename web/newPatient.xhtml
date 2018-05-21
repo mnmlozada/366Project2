@@ -3,51 +3,51 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <title>New Customer</title>
+    <title>New Patient</title>
     <h:head>
         <link href="css/stylesheet.css" rel="stylesheet" type="text/css" />
-        <h1>New Customer</h1>
+        <h1>New Patient</h1>
     </h:head>
     <h:body>
         <h:form>
             <h:panelGrid columns="3">
                 
-                Name: <h:inputText value="#{customer.name}" required ="true"
-                   requiredMessage="Your must enter Customer Name"
+                Name: <h:inputText value="#{patient.name}" required ="true"
+                   requiredMessage="Your must enter Patient Name"
                    id="userName"/>
                 <h:message for="userName" style="color:red;margin:8px;"/>
 
-                Address: <h:inputText value="#{customer.address}" required ="true"
-                                      requiredMessage="Your must enter Customer Address"
+                Address: <h:inputText value="#{patient.address}" required ="true"
+                                      requiredMessage="Your must enter Patient Address"
                                       validatorMessage="Address must be at least five characters"
                                       id="userAddress">
                     <f:validateLength minimum="5"/>
                 </h:inputText>
                 <h:message for="userAddress" style="color:red;margin:8px;"/>
                 
-                Username: <h:inputText value="#{customer.username}" required ="true"
-                                   requiredMessage="Your must enter Customer Username"
+                Username: <h:inputText value="#{patient.username}" required ="true"
+                                   requiredMessage="Your must enter Patient Username"
                                    validatorMessage="Username must be at least five characters"
                                    id="userUsername">
                     <f:validateLength minimum="5"/>
                 </h:inputText>
                 <h:message for="userUsername" style="color:red;margin:8px;"/>
                 
-                Password: <h:inputSecret value="#{customer.password}" required ="true"
-                                   requiredMessage="Your must enter Customer Password"
+                Password: <h:inputSecret value="#{patient.password}" required ="true"
+                                   requiredMessage="Your must enter Patient Password"
                                    validatorMessage="Password must be at least eight characters"
                                    id="userPassword">
                     <f:validateLength minimum="8"/>
                 </h:inputSecret>
                 <h:message for="userPassword" style="color:red;margin:8px;"/>
                 
-                Email: <h:inputText value="#{customer.email}" required ="true"
-                                   requiredMessage="Your must enter Customer Email"
+                Email: <h:inputText value="#{patient.email}" required ="true"
+                                   requiredMessage="Your must enter Patient Email"
                                    id="userEmail"/>
                 <h:message for="userEmail" style="color:red;margin:8px;"/>
                 
-                Credit Card Number: <h:inputText value="#{customer.cc_num}" required ="true"
-                                   requiredMessage="Your must enter Customer Credit Card Number"
+                Credit Card Number: <h:inputText value="#{patient.cc_num}" required ="true"
+                                   requiredMessage="Your must enter Patient Credit Card Number"
                                    validatorMessage="Credit Card Number must be 16 numbers"
                                    id="userCCNum">
                     <f:validateLength minimum="16" maximum="16"/>
@@ -55,7 +55,7 @@
                 </h:inputText>
                 <h:message for="userCCNum" style="color:red;margin:8px;"/>
                 
-                Credit Card Expiration Date: <h:inputText value="#{customer.cc_exp}" required ="true"
+                Credit Card Expiration Date: <h:inputText value="#{patient.cc_exp}" required ="true"
                                    requiredMessage="Your must enter Customer Credit Card Expiration Date"
                                    validatorMessage="Credit Card Expiration Date must be in the format MM/YY"
                                    id="userCCExpr">
@@ -63,8 +63,8 @@
                 </h:inputText>
                 <h:message for="userCCExpr" style="color:red;margin:8px;"/>
                 
-                Credit Card CRC: <h:inputText value="#{customer.cc_crc}" required ="true"
-                                   requiredMessage="Your must enter Customer Credit Card CRC"
+                Credit Card CRC: <h:inputText value="#{patient.cc_crc}" required ="true"
+                                   requiredMessage="Your must enter Patient Credit Card CRC"
                                    validatorMessage="Credit Card CRC must be 3 numbers"
                                    id="userCCCRC">
                     <f:validateLength minimum="3" maximum="3"/>
@@ -74,7 +74,7 @@
                 <h:message for="userDate" style="color:red;margin:8px;"/>
             </h:panelGrid>
             <h:panelGrid>
-                <h:commandButton value="Go" action="#{customer.createCustomer}"/>
+                <h:commandButton value="Go" action="#{patient.createPatient}"/>
             </h:panelGrid>
         </h:form>
     </h:body>

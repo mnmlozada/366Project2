@@ -21,10 +21,10 @@ import javax.el.ELContext;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.component.UIInput;
 
-@Named(value = "employee")
+@Named(value = "staff")
 @SessionScoped
 @ManagedBean
-public class Employee implements Serializable {
+public class Staff implements Serializable {
 
     @ManagedProperty(value = "#{login}")
     private Login login;
@@ -38,7 +38,7 @@ public class Employee implements Serializable {
     }
 
     private DBConnect dbConnect = new DBConnect();
-    private Integer employeeID;
+    private Integer staffID;
     private String name;
     private String username;
     private String password;
@@ -97,8 +97,8 @@ public class Employee implements Serializable {
         this.password = password;
     }
 
-    public Integer getEmployeeID() throws SQLException {
-        if (employeeID == null) {
+    public Integer getStaffID() throws SQLException {
+        if (staffID == null) {
             Connection con = dbConnect.getConnection();
 
             if (con == null) {
@@ -107,20 +107,20 @@ public class Employee implements Serializable {
 
             PreparedStatement ps
                     = con.prepareStatement(
-                            "select max(employee_id)+1 from employee");
+                            "select max(staff_id)+1 from staff");
             ResultSet result = ps.executeQuery();
             if (!result.next()) {
                 return null;
             }
-            employeeID = result.getInt(1);
+            staffID = result.getInt(1);
             result.close();
             con.close();
         }
-        return employeeID;
+        return staffID;
     }
 
-    public void setEmployeeID(Integer employeeID) {
-        this.employeeID = employeeID;
+    public void setStaffID(Integer staffID) {
+        this.staffID = staffID;
     }
 
     public String getName() {
@@ -135,7 +135,7 @@ public class Employee implements Serializable {
         this.name = name;
     }
 
-    public String createEmployee() throws SQLException, ParseException {
+    public String createStaff() throws SQLException, ParseException {
         Connection con = dbConnect.getConnection();
 
         if (con == null) {
@@ -145,8 +145,8 @@ public class Employee implements Serializable {
 
         Statement statement = con.createStatement();
 
-        PreparedStatement preparedStatement = con.prepareStatement("Insert into employee (name, username, password) values(?,?,?)");
-        //preparedStatement.setInt(1, employeeID);
+        PreparedStatement preparedStatement = con.prepareStatement("Insert into staff (name, username, password) values(?,?,?)");
+        //preparedStatement.setInt(1, staffID);
         preparedStatement.setString(1, name);
         preparedStatement.setString(2, username);
         preparedStatement.setString(3, password);
@@ -158,7 +158,7 @@ public class Employee implements Serializable {
         return "main";
     }
 
-    public String deleteEmployee() throws SQLException, ParseException {
+    public String deleteStaff() throws SQLException, ParseException {
         Connection con = dbConnect.getConnection();
 
         if (con == null) {
@@ -167,7 +167,7 @@ public class Employee implements Serializable {
         con.setAutoCommit(false);
 
         Statement statement = con.createStatement();
-        statement.executeUpdate("Delete from employee where employee_id = " + employeeID);
+        statement.executeUpdate("Delete from staff where staff_id = " + staffID);
         statement.close();
         con.commit();
         con.close();
@@ -175,12 +175,12 @@ public class Employee implements Serializable {
         return "main";
     }
 
-    public String showEmployee() {
-        return "showEmployee";
+    public String showStaff() {
+        return "showStaff";
     }
     
     // Admin Access Only
-    public Employee AdminGetEmployee() throws SQLException {
+    public Staff AdminGetStaff() throws SQLException {
         Connection con = dbConnect.getConnection();
 
         if (con == null) {
@@ -189,14 +189,14 @@ public class Employee implements Serializable {
 
         PreparedStatement ps
                 = con.prepareStatement(
-                        "select * from employee where employee_id = " + employeeID);
+                        "select * from staff where staff_id = " + staffID);
 
         //get customer data from database
         ResultSet result = ps.executeQuery();
 
         result.next();
         
-        employeeID = result.getInt("employeeID");
+        staffID = result.getInt("staffID");
         name = result.getString("name");
         username = result.getString("username");
         password = result.getString("password");
@@ -204,7 +204,7 @@ public class Employee implements Serializable {
     }
     
     // Employee Access Only
-    public Employee getEmployee() throws SQLException {
+    public Staff getStaff() throws SQLException {
         Connection con = dbConnect.getConnection();
 
         if (con == null) {
@@ -213,20 +213,20 @@ public class Employee implements Serializable {
 
         PreparedStatement ps
                 = con.prepareStatement(
-                        "select * from employee where employee_id = " + employeeID);
+                        "select * from staff where staff_id = " + staffID);
 
         //get customer data from database
         ResultSet result = ps.executeQuery();
 
         result.next();
         
-        employeeID = result.getInt("employeeID");
+        staffID = result.getInt("staffID");
         name = result.getString("name");
         return this;
     }
     
     // Admin Access Only
-    public List<Employee> adminGetEmployeeList() throws SQLException {
+    public List<Staff> adminGetStaffList() throws SQLException {
 
         Connection con = dbConnect.getConnection();
 
@@ -236,23 +236,23 @@ public class Employee implements Serializable {
 
         PreparedStatement ps
                 = con.prepareStatement(
-                        "select employee_id, name, username, password from employee order by employee_id");
+                        "select staff_id, name, username, password from staff order by staff_id");
 
         //get employee data from database
         ResultSet result = ps.executeQuery();
 
-        List<Employee> list = new ArrayList<Employee>();
+        List<Staff> list = new ArrayList<Staff>();
 
         while (result.next()) {
-            Employee employee = new Employee();
+            Staff staff = new Staff();
 
-            employee.setEmployeeID(result.getInt("employee_id"));
-            employee.setName(result.getString("name"));
-            employee.setUsername(result.getString("username"));
-            employee.setPassword(result.getString("password"));
+            staff.setStaffID(result.getInt("staff_id"));
+            staff.setName(result.getString("name"));
+            staff.setUsername(result.getString("username"));
+            staff.setPassword(result.getString("password"));
 
             //store all data into a List
-            list.add(employee);
+            list.add(staff);
         }
         result.close();
         con.close();
@@ -260,7 +260,7 @@ public class Employee implements Serializable {
     }
     
     // Employee Access Only
-    public List<Employee> getEmployeeList() throws SQLException {
+    public List<Staff> getStaffList() throws SQLException {
 
         Connection con = dbConnect.getConnection();
 
@@ -270,56 +270,56 @@ public class Employee implements Serializable {
 
         PreparedStatement ps
                 = con.prepareStatement(
-                        "select employee_id, name, username, password from employee order by employee_id");
+                        "select staff_id, name, username, password from staff order by staff_id");
 
         //get employee data from database
         ResultSet result = ps.executeQuery();
 
-        List<Employee> list = new ArrayList<Employee>();
+        List<Staff> list = new ArrayList<Staff>();
 
         while (result.next()) {
-            Employee employee = new Employee();
+            Staff staff = new Staff();
 
-            employee.setEmployeeID(result.getInt("employee_id"));
-            employee.setName(result.getString("name"));
+            staff.setStaffID(result.getInt("staff_id"));
+            staff.setName(result.getString("name"));
 
             //store all data into a List
-            list.add(employee);
+            list.add(staff);
         }
         result.close();
         con.close();
         return list;
     }
 
-    public void employeeIDExists(FacesContext context, UIComponent componentToValidate, Object value)
+    public void StaffIDExists(FacesContext context, UIComponent componentToValidate, Object value)
             throws ValidatorException, SQLException {
 
-        if (!existsEmployeeID((Integer) value)) {
+        if (!existsStaffID((Integer) value)) {
             FacesMessage errorMessage = new FacesMessage("ID does not exist");
             throw new ValidatorException(errorMessage);
         }
     }
 
-    public void validateEmployeeID(FacesContext context, UIComponent componentToValidate, Object value)
+    public void validateStaffID(FacesContext context, UIComponent componentToValidate, Object value)
             throws ValidatorException, SQLException {
         int id = (Integer) value;
         if (id < 0) {
             FacesMessage errorMessage = new FacesMessage("ID must be positive");
             throw new ValidatorException(errorMessage);
         }
-        if (existsEmployeeID((Integer) value)) {
+        if (existsStaffID((Integer) value)) {
             FacesMessage errorMessage = new FacesMessage("ID already exists");
             throw new ValidatorException(errorMessage);
         }
     }
 
-    private boolean existsEmployeeID(int id) throws SQLException {
+    private boolean existsStaffID(int id) throws SQLException {
         Connection con = dbConnect.getConnection();
         if (con == null) {
             throw new SQLException("Can't get database connection");
         }
 
-        PreparedStatement ps = con.prepareStatement("select * from employee where employee_id = " + id);
+        PreparedStatement ps = con.prepareStatement("select * from staff where staff_id = " + id);
 
         ResultSet result = ps.executeQuery();
         if (result.next()) {
@@ -359,7 +359,7 @@ public class Employee implements Serializable {
             throw new SQLException("Can't get database connection");
         }
 
-        PreparedStatement ps = con.prepareStatement("update employee set password = '" + newPass1 + "' where employee_id = " + login.getUserId());
+        PreparedStatement ps = con.prepareStatement("update staff set password = '" + newPass1 + "' where staff_id = " + login.getUserId());
         ps.executeUpdate();
         
         login.setPassword(newPass1);

@@ -6,19 +6,19 @@
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
 >
     <ui:param
-        name="customerCheckingOut"
-        value="#{customer.getByName(customer.name)}"
+        name="patientCheckingOut"
+        value="#{patient.getByName(patient.name)}"
     />
-    <ui:param name="cName" value="#{customerCheckingOut.name}"/>
+    <ui:param name="pName" value="#{patientCheckingOut.name}"/>
     
     <ui:param name="checkOutDate" value="#{reservation.checkedOut}"/>
     <!--
         reservation.get cannot be passed customer.name. Otherwise, variable r
         will be set as a customer for some disgusting reason.
     -->
-    <ui:param name="r" value="#{reservation.getByName(cName)}"/>
+    <ui:param name="r" value="#{reservation.getByName(pName)}"/>
     
-    <title>Check Out Customer</title>
+    <title>Check Out Patient</title>
 
     <c:if test="#{empty r}">
         <h:head>
@@ -28,7 +28,7 @@
                 type="text/css"
             />
             <h1>
-                This customer has not made a reservation, not checked in,
+                This patient has not made a reservation, not checked in,
                 or has already checked out.
             </h1>
         </h:head>
@@ -36,8 +36,8 @@
         <h:body>
             <h:form>
                 <h:commandButton
-                    value="Return to Employee Page"
-                    action="startEmployee"
+                    value="Return to Staff Page"
+                    action="startStaff"
                 />
             </h:form>
         </h:body>
@@ -49,7 +49,7 @@
             the variable is trashed.
         -->
         <ui:param name="rID" value="#{r.reservationId}"/>
-        #{transaction.create(customerCheckingOut, rID, checkOutDate, r.total)}
+        #{transaction.create(patientCheckingOut, rID, checkOutDate, r.total)}
         
         <h:head>
             <link
@@ -58,15 +58,15 @@
                 type="text/css"
             />
             <h1>
-                The customer is now checked out and has been charged a
+                The patient is now checked out and has been charged a
                 reservation fee of $#{r.checkOut(rID, checkOutDate)}.
             </h1>
         </h:head>
         <h:body>
             <h:form>
                 <h:commandButton
-                    value="Return to Employee Page"
-                    action="startEmployee"
+                    value="Return to Staff Page"
+                    action="startStaff"
                 />
             </h:form>
         </h:body>

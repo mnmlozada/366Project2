@@ -6,7 +6,7 @@ import javax.faces.bean.SessionScoped;
 @Named(value = "selector_employee")
 @ManagedBean
 @SessionScoped
-public class SelectorEmployee implements Serializable {
+public class SelectorStaff implements Serializable {
 
     private String[] choices = 
     {

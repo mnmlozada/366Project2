@@ -4,22 +4,22 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
 >
-    <title>Enter Customer to Add Charges</title>
+    <title>Enter Patient to Add Charges</title>
     
     <h:head>
         <link href="css/stylesheet.css" rel="stylesheet" type="text/css" />
-        <h1>Enter Customer to Add Charges</h1>
+        <h1>Enter Patient to Add Charges</h1>
     </h:head>
     
     <h:body>
         <h:form>
             <h:panelGrid columns="3">
-                Customer Name:
+                Patient Name:
                 <h:inputText
-                    value="#{customer.name}" required ="true"
-                    requiredMessage="You must enter a customer's name."
-                    validator="#{customer.validateCustomerName}"
-                    converterMessage="Customer name must be a string."
+                    value="#{patient.name}" required ="true"
+                    requiredMessage="You must enter a patient's name."
+                    validator="#{patient.validatePatientName}"
+                    converterMessage="Patient name must be a string."
                 />
                 <h:message for="name" style="color:red;margin:8px;"/>
 

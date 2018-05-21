@@ -168,7 +168,7 @@ public class Transaction implements Serializable {
         this.total = total;
     }
 
-    public void create(Customer c, Integer rID, Date transDate, Double total)
+    public void create(Patient c, Integer rID, Date transDate, Double total)
         throws SQLException, ParseException {
         Connection con = dbConnect.getConnection();
         if (con == null) {
@@ -187,7 +187,7 @@ public class Transaction implements Serializable {
                 "total" +
             ") values (?, ?, ?, ?, ?, ?, ?)"
         );
-        ps.setInt(1, c.getCustomerID());
+        ps.setInt(1, c.getPatientID());
         ps.setInt(2, rID);
         
         ps.setString(3, c.getCc_num());

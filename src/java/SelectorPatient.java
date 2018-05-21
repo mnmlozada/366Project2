@@ -13,10 +13,10 @@ import javax.faces.bean.SessionScoped;
  *
  * @author stanchev
  */
-@Named(value = "selector_customer")
+@Named(value = "selector_patient")
 @ManagedBean
 @SessionScoped
-public class SelectorCustomer implements Serializable {
+public class SelectorPatient implements Serializable {
 
     private String[] choices = {"List My Reservations", "Cancel Reservation", "Create Reservation"};
     private String choice;

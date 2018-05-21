@@ -6,17 +6,17 @@
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
 >
     <ui:param
-        name="customerCheckingIn"
-        value="#{customer.getByName(customer.name)}"
+        name="patientCheckingIn"
+        value="#{patient.getByName(customer.name)}"
     />
-    <ui:param name="cName" value="#{customerCheckingIn.name}"/>
+    <ui:param name="pName" value="#{patientCheckingIn.name}"/>
     <!--
-        reservation.get cannot be passed customer.name. Otherwise, variable r
-        will be set as a customer for some disgusting reason.
+        reservation.get cannot be passed patient.name. Otherwise, variable r
+        will be set as a patient for some disgusting reason.
     -->
-    <ui:param name="r" value="#{reservation.getNextToCheckIn(cName)}"/>
+    <ui:param name="r" value="#{reservation.getNextToCheckIn(pName)}"/>
     
-    <title>Check In Customer</title>
+    <title>Check In Patient</title>
 
     <c:if test="#{empty r}">
         <h:head>
@@ -26,7 +26,7 @@
                 type="text/css" 
             />
             <h1>
-                This customer has already checked in, or has not made a
+                This patient has already checked in, or has not made a
                 reservation.
             </h1>
         </h:head>
@@ -34,8 +34,8 @@
         <h:body>
             <h:form>
                 <h:commandButton
-                    value="Return to Employee Page"
-                    action="startEmployee"
+                    value="Return to Staff Page"
+                    action="startStaff"
                 />
             </h:form>
         </h:body>
@@ -52,7 +52,7 @@
                 type="text/css"
             />
             <h1>
-                The customer will pay a reservation fee of $#{r.total} when
+                The patient will pay a reservation fee of $#{r.total} when
                 checking out, and will be staying in room number #{roomNum}.
             </h1>
         </h:head>
@@ -60,8 +60,8 @@
         <h:body>
             <h:form>
                 <h:commandButton
-                    value="Return to Employee Page"
-                    action="startEmployee"
+                    value="Return to Staff Page"
+                    action="startStaff"
                 />
             </h:form>
         </h:body>

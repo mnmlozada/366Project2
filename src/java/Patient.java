@@ -22,10 +22,10 @@ import javax.inject.Named;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ManagedProperty;
 
-@Named(value = "customer")
+@Named(value = "patient")
 @SessionScoped
 @ManagedBean
-public class Customer implements Serializable {
+public class Patient implements Serializable {
 
     @ManagedProperty(value = "#{login}")
     private Login login;
@@ -39,7 +39,7 @@ public class Customer implements Serializable {
     }
 
     private final DBConnect dbConnect = new DBConnect();
-    private Integer customerID;
+    private Integer patientID;
     private String name;
     private String address;
     private Date created_date;
@@ -50,34 +50,34 @@ public class Customer implements Serializable {
     private Date cc_exp;
     private Integer cc_crc;
 
-    public Integer getCustomerID() throws SQLException {
-        if (customerID == null) {
+    public Integer getPatientID() throws SQLException {
+        if (patientID == null) {
             Connection con = dbConnect.getConnection();
             if (con == null) {
                 throw new SQLException("Can't get database connection");
             }
 
             PreparedStatement ps = con.prepareStatement(
-                "select max(customer_id) + 1 from customer"
+                "select max(patient_id) + 1 from customer"
             );
             
             ResultSet result = ps.executeQuery();
             if (!result.next()) {
                 return null;
             }
-            customerID = result.getInt(1);
+            patientID = result.getInt(1);
             
             result.close();
             con.close();
         }
-        return customerID;
+        return patientID;
     }
 
-    public void setCustomerID(Integer customerID) {
-        this.customerID = customerID;
+    public void setPatientID(Integer patientID) {
+        this.patientID = patientID;
     }
 
-    public void validateCustomerID(
+    public void validatePatientID(
         FacesContext context,
         UIComponent componentToValidate,
         Object value
@@ -87,33 +87,33 @@ public class Customer implements Serializable {
             FacesMessage errorMessage = new FacesMessage("ID must be positive");
             throw new ValidatorException(errorMessage);
         }
-        if (customerIDExists((Integer) value)) {
+        if (patientIDExists((Integer) value)) {
             FacesMessage errorMessage = new FacesMessage("ID already exists");
             throw new ValidatorException(errorMessage);
         }
     }
     
-    public void customerIDExists(FacesContext context,
+    public void patientIDExists(FacesContext context,
         UIComponent componentToValidate,
         Object value
     ) throws ValidatorException, SQLException {
         
-        customerID = Integer.parseInt(value.toString());
+        patientID = Integer.parseInt(value.toString());
         
-        if (!customerIDExists(customerID)) {
-            FacesMessage errorMessage = new FacesMessage("Customer ID does not exist.");
+        if (!patientIDExists(patientID)) {
+            FacesMessage errorMessage = new FacesMessage("Patient ID does not exist.");
             throw new ValidatorException(errorMessage);
         }
     }
 
-    private boolean customerIDExists(int id) throws SQLException {
+    private boolean patientIDExists(int id) throws SQLException {
         Connection con = dbConnect.getConnection();
         if (con == null) {
             throw new SQLException("Can't get database connection");
         }
 
         PreparedStatement ps = con.prepareStatement(
-            "select * from customer where customer_id = " + id
+            "select * from patient where patient_id = " + id
         );
 
         ResultSet result = ps.executeQuery();
@@ -135,26 +135,26 @@ public class Customer implements Serializable {
         this.name = name;
     }
 
-    public void validateCustomerName(
+    public void validatePatientName(
         FacesContext context,
         UIComponent componentToValidate,
         Object value
     ) throws ValidatorException, SQLException {
         
-        if (!customerNameExists(value.toString())) {
+        if (!patientNameExists(value.toString())) {
             FacesMessage errorMessage = new FacesMessage("Name does not exist");
             throw new ValidatorException(errorMessage);
         }
     }
     
-    private boolean customerNameExists(String name) throws SQLException {
+    private boolean patientNameExists(String name) throws SQLException {
         Connection con = dbConnect.getConnection();
         if (con == null) {
             throw new SQLException("Can't get database connection");
         }
 
         PreparedStatement ps = con.prepareStatement(
-            "select * from customer where name = '" + name + "'"
+            "select * from patient where name = '" + name + "'"
         );
 
         ResultSet result = ps.executeQuery();
@@ -233,18 +233,18 @@ public class Customer implements Serializable {
         this.cc_crc = cc_crc;
     }
 
-    public String createCustomer() throws SQLException, ParseException {
+    public String createPatient() throws SQLException, ParseException {
         Connection con = dbConnect.getConnection();
         if (con == null) {
             throw new SQLException("Can't get database connection");
         }
         con.setAutoCommit(false);
         
-        if (customerID == null) {
-            customerID = getCustomerID();
+        if (patientID == null) {
+            patientID = getPatientID();
         }
         PreparedStatement ps = con.prepareStatement(
-            "Insert into Customer (name, address, created_date, username, " +
+            "Insert into Patient (name, address, created_date, username, " +
                 "password, email, cc_num, cc_ex, cc_crc) " +
                 "values(?,?,current_date,?,?,?,?,?,?)");
         //preparedStatement.setInt(1, customerID);
@@ -266,7 +266,7 @@ public class Customer implements Serializable {
         return "main";
     }
 
-    public String deleteCustomer() throws SQLException, ParseException {
+    public String deletePatient() throws SQLException, ParseException {
         Connection con = dbConnect.getConnection();
         if (con == null) {
             throw new SQLException("Can't get database connection");
@@ -275,7 +275,7 @@ public class Customer implements Serializable {
 
         Statement statement = con.createStatement();
         statement.executeUpdate(
-            "Delete from Customer where customer_id = " + customerID
+            "Delete from Patient where patient_id = " + patientID
         );
         statement.close();
         
@@ -285,23 +285,23 @@ public class Customer implements Serializable {
         return "main";
     }
 
-    public String showCustomer() {
-        return "showCustomer";
+    public String showPatient() {
+        return "showPatient";
     }
     
-    public Customer getByID(Integer cID) throws SQLException {
+    public Patient getByID(Integer cID) throws SQLException {
         Connection con = dbConnect.getConnection();
         if (con == null) {
             throw new SQLException("Can't get database connection");
         }
 
         PreparedStatement ps = con.prepareStatement(
-            "select * from customer where customer_id = " + cID
+            "select * from patient where patient_id = " + cID
         );
 
         ResultSet result = ps.executeQuery();
         if (result.next()) {
-            customerID = result.getInt("customer_id");
+            patientID = result.getInt("patient_id");
             name = result.getString("name");
             address = result.getString("address");
             created_date = result.getDate("created_date");
@@ -315,19 +315,19 @@ public class Customer implements Serializable {
         return this;
     }
     
-    public Customer getByName(String cName) throws SQLException {
+    public Patient getByName(String cName) throws SQLException {
         Connection con = dbConnect.getConnection();
         if (con == null) {
             throw new SQLException("Can't get database connection");
         }
 
         PreparedStatement ps = con.prepareStatement(
-            "select * from customer where name = '" + cName + "'"
+            "select * from patient where name = '" + cName + "'"
         );
 
         ResultSet result = ps.executeQuery();
         if (result.next()) {
-            customerID = result.getInt("customer_id");
+            patientID = result.getInt("patient_id");
             name = result.getString("name");
             address = result.getString("address");
             created_date = result.getDate("created_date");
@@ -341,38 +341,32 @@ public class Customer implements Serializable {
         return this;
     }
         
-    public List<Customer> getCustomerList() throws SQLException {
+    public List<Patient> getPatientList() throws SQLException {
         Connection con = dbConnect.getConnection();
         if (con == null) {
             throw new SQLException("Can't get database connection");
         }
 
         PreparedStatement ps = con.prepareStatement(
-            "select customer_id, name, address, created_date " +
-            "from customer " +
-            "order by customer_id"
+            "select patient_id, name, address, created_date " +
+            "from patient " +
+            "order by patient_id"
         );
 
-        //get customer data from database
+        //get patient data from database
         ResultSet result = ps.executeQuery();
-        List<Customer> list = new ArrayList<>();
+        List<Patient> list = new ArrayList<>();
 
         while (result.next()) {
-            Customer cust = new Customer();
+            Patient pat = new Patient();
 
-            cust.setCustomerID(result.getInt("customer_id"));
-            cust.setName(result.getString("name"));
-            cust.setAddress(result.getString("address"));
-            cust.setCreated_date(result.getDate("created_date"));
-//            cust.setUsername(result.getString("username"));
-//            cust.setPassword(result.getString("password"));
-//            cust.setEmail(result.getString("email"));
-//            cust.setCc_num(result.getString("cc_num"));
-//            cust.setCc_exp(result.getDate("cc_exp"));
-//            cust.setCc_crc(result.getInt("cc_crc"));
+            pat.setPatientID(result.getInt("patient_id"));
+            pat.setName(result.getString("name"));
+            pat.setAddress(result.getString("address"));
+            pat.setCreated_date(result.getDate("created_date"));
 
             //store all data into a List
-            list.add(cust);
+            list.add(pat);
         }
         result.close();
         con.close();

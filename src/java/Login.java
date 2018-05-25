@@ -15,16 +15,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import javax.inject.Named;
 
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-/**
- *
- * @author stanchev
- */
 @Named(value = "login")
 @SessionScoped
 @ManagedBean
@@ -36,7 +26,7 @@ public class Login implements Serializable {
     
     private String login;
     private String password;
-    private UIInput loginUI;
+    private UIComponent loginUI;
     private int userId;
     private int type = -1;
     private DBConnect dbConnect = new DBConnect();
@@ -53,11 +43,11 @@ public class Login implements Serializable {
         return type;
     }
 
-    public UIInput getLoginUI() {
+    public UIComponent getLoginUI() {
         return loginUI;
     }
 
-    public void setLoginUI(UIInput loginUI) {
+    public void setLoginUI(UIComponent loginUI) {
         this.loginUI = loginUI;
     }
 
@@ -82,10 +72,11 @@ public class Login implements Serializable {
     }
 
     public void validate(FacesContext context, UIComponent component, Object value)
-            throws ValidatorException, SQLException {
-        login = loginUI.getLocalValue().toString();
+            throws ValidatorException, SQLException { 
+        UIInput temp = (UIInput)loginUI;
+        login = temp.getLocalValue().toString();
         password = value.toString();
-        System.out.println("hello");
+
         type = processLogin(login, password);
 
         if (type == -1) {

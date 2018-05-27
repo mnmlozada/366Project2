@@ -4,6 +4,11 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd"
 >
+    
+    <application>
+		<resource-handler>org.omnifaces.resourcehandler.CombinedResourceHandler</resource-handler>
+	</application>
+        
     <managed-bean id="selector_employee">
         <managed-bean-name>selector_employee</managed-bean-name>
         <managed-bean-class>SelectorEmployee</managed-bean-class>
@@ -33,8 +38,8 @@
             <value>#{login}</value>
         </managed-property>
     </managed-bean>
-    <managed-bean id="login">
-        <managed-bean-name>login</managed-bean-name>
+    <managed-bean id="logins">
+        <managed-bean-name>logins</managed-bean-name>
         <managed-bean-class>Login</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean> 

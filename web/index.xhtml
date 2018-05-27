@@ -1,44 +1,52 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-    <h:head>
-        <link href="css/stylesheet.css" rel="stylesheet" type="text/css" />
-        <h1>Login Screen</h1>
-    </h:head>
-    <h:body>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="#{layoutMB.template}">
+    
+    <ui:define name="head">
+        <title>Login</title>
+    </ui:define> 
 
-
-
+    
+    <ui:define name="body">
+        <p:panel styleClass="card box-info" header="Login">
         <h:form>
-            <h:panelGrid columns="3">
-
-                Login: <h:inputText value="#{login.login}" required ="true"
-                                    binding="#{login.loginUI}"
-                                    requiredMessage="Your must enter login"
+            <div class="ui-g ui-fluid">       
+                    <div class="ui-g-12">
+                        <p:outputLabel for="login" value="Username"/>
+                    </div>
+                    <div class="ui-g-8">
+                        <p:inputText value="#{logins.login}" required ="true"
+                                    binding="#{logins.loginUI}"
+                                    requiredMessage="Your must enter username"
                                     id="login"/>
-                <h:message for="login" style="color:red;margin:8px;"/>
-
-                Password: <h:inputSecret value="#{login.password}" required ="true"
+                    </div>
+                    <div class="ui-g-4">
+                        <p:message id="msgDefault" for="login"/>
+                    </div>
+                
+                <div class="ui-g-12">
+                        <p:outputLabel for="password" value="Password"/>
+                    </div>
+                    <div class="ui-g-8">
+                        <p:password value="#{logins.password}" required ="true"
                                          requiredMessage="Your must enter password"
                                          validatorMessage="Login/Password incorrect"
-                                         validator="#{login.validate}"
+                                         validator="#{logins.validate}"
                                          id="password"/>
-                <h:message for="password" style="color:red;margin:8px;"/>
-
-            </h:panelGrid>
-            <h:panelGrid>
-                <h:commandButton value="Login" action="#{login.go}"/>
-            </h:panelGrid>
+                    </div>
+                    <div class="ui-g-4">
+                        <p:message id="msgDefault2" for="password"/>
+                    </div>
+                    
+                    <p:commandButton id="btn" action="#{logins.go}" value="Login" update="@form"
+                                          validateClient="true"  styleClass="btn-primary"/>
+            </div>
         </h:form>
-        <h:form>
-            <h:panelGrid>
-                <h:commandButton value="Create New User Account" action="#{customer.go}"/>
-            </h:panelGrid>
-        </h:form>
-
-    </h:body>
-</html>
-
+        </p:panel>
+    </ui:define>
+    
+</ui:composition>

@@ -15,9 +15,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import javax.inject.Named;
-import java.util.Date;
-import java.util.TimeZone;
-import javax.el.ELContext;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.component.UIInput;
 
@@ -39,6 +36,7 @@ public class Staff implements Serializable {
 
     private DBConnect dbConnect = new DBConnect();
     private Integer staffID;
+    private String position;
     private String name;
     private String username;
     private String password;
@@ -49,6 +47,14 @@ public class Staff implements Serializable {
     private String newPass2;
     private UIInput newPass1UI;
 
+    public String getPosition() {
+        return position;
+    }
+    
+    public void setPosition(String position) {
+        this.position = position;
+    }
+    
     public UIInput getNewPass1UI() {
         return newPass1UI;
     }
@@ -145,11 +151,12 @@ public class Staff implements Serializable {
 
         Statement statement = con.createStatement();
 
-        PreparedStatement preparedStatement = con.prepareStatement("Insert into staff (name, username, password) values(?,?,?)");
+        PreparedStatement preparedStatement = con.prepareStatement("Insert into staff (name, position, username, password) values(?,?,?, ?)");
         //preparedStatement.setInt(1, staffID);
         preparedStatement.setString(1, name);
-        preparedStatement.setString(2, username);
-        preparedStatement.setString(3, password);
+        preparedStatement.setString(2, position);
+        preparedStatement.setString(3, username);
+        preparedStatement.setString(4, password);
         preparedStatement.executeUpdate();
         statement.close();
         con.commit();
@@ -197,6 +204,7 @@ public class Staff implements Serializable {
         result.next();
         
         staffID = result.getInt("staffID");
+        position = result.getString("position");
         name = result.getString("name");
         username = result.getString("username");
         password = result.getString("password");
@@ -222,6 +230,7 @@ public class Staff implements Serializable {
         
         staffID = result.getInt("staffID");
         name = result.getString("name");
+        position = result.getString("position");
         return this;
     }
     
@@ -236,7 +245,7 @@ public class Staff implements Serializable {
 
         PreparedStatement ps
                 = con.prepareStatement(
-                        "select staff_id, name, username, password from staff order by staff_id");
+                        "select staff_id, name, position, username, password from staff order by staff_id");
 
         //get employee data from database
         ResultSet result = ps.executeQuery();
@@ -248,6 +257,7 @@ public class Staff implements Serializable {
 
             staff.setStaffID(result.getInt("staff_id"));
             staff.setName(result.getString("name"));
+            staff.setPosition(result.getString("position"));
             staff.setUsername(result.getString("username"));
             staff.setPassword(result.getString("password"));
 
@@ -270,7 +280,7 @@ public class Staff implements Serializable {
 
         PreparedStatement ps
                 = con.prepareStatement(
-                        "select staff_id, name, username, password from staff order by staff_id");
+                        "select staff_id, name, position, username, password from staff order by staff_id");
 
         //get employee data from database
         ResultSet result = ps.executeQuery();
@@ -282,6 +292,7 @@ public class Staff implements Serializable {
 
             staff.setStaffID(result.getInt("staff_id"));
             staff.setName(result.getString("name"));
+            staff.setPosition(result.getString("position"));
 
             //store all data into a List
             list.add(staff);

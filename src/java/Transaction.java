@@ -40,13 +40,10 @@ public class Transaction implements Serializable {
     private DBConnect dbConnect = new DBConnect();
     
     private Integer transaction_id;
-    private Integer customer_id;
+    private Integer patient_id;
     private Integer reservation_id;
-    
-    private String cc_num;
-    private Date cc_exp;
-    private Integer cc_crc;
-    
+    private String charge_type;
+    private String charge_description;
     private Date tran_date;
     private Double total;
 
@@ -113,11 +110,11 @@ public class Transaction implements Serializable {
     }
     
     public Integer getCustomerID() {
-        return customer_id;
+        return patient_id;
     }
 
-    public void setCustomerID(Integer customer_id) {
-        this.customer_id = customer_id;
+    public void setCustomerID(Integer patient_id) {
+        this.patient_id = patient_id;
     }
 
     public Integer getReservationID() {
@@ -127,29 +124,21 @@ public class Transaction implements Serializable {
     public void setReservationID(Integer reservation_id) {
         this.reservation_id = reservation_id;
     }
-
-    public String getCc_num() {
-        return cc_num;
+    
+    public String getChargeType(){
+        return charge_type;
     }
-
-    public void setCc_num(String cc_num) {
-        this.cc_num = cc_num;
+    
+    public void setChargeType(String charge_type){
+        this.charge_type = charge_type;
     }
-
-    public Date getCc_exp() {
-        return cc_exp;
+    
+    public String getChargeDescription() {
+        return charge_description;
     }
-
-    public void setCc_exp(Date cc_exp) {
-        this.cc_exp = cc_exp;
-    }
-
-    public Integer getCc_crc() {
-        return cc_crc;
-    }
-
-    public void setCc_crc(Integer cc_crc) {
-        this.cc_crc = cc_crc;
+    
+    public void setChargeDescription(String charge_description){
+        this.charge_description = charge_description;
     }
     
     public Date getTranDate() {
@@ -180,22 +169,20 @@ public class Transaction implements Serializable {
             "Insert into transactions (" +
                 "customer_id," +
                 "reservation_id," +
-                "cc_num," +
-                "cc_ex," +
-                "cc_crc," +
+                "charge_type," +
+                "charge_description," +
                 "tran_date, " +
                 "total" +
-            ") values (?, ?, ?, ?, ?, ?, ?)"
+            ") values (?, ?, ?, ?, ?, ?)"
         );
         ps.setInt(1, c.getPatientID());
         ps.setInt(2, rID);
         
-        ps.setString(3, c.getCc_num());
-        ps.setDate(4, new java.sql.Date(c.getCc_exp().getTime()));
-        ps.setInt(5, c.getCc_crc());
+        ps.setString(3, c.getChargeType());
+        ps.setString(4, c.getChargeDescription());
         
-        ps.setDate(6, new java.sql.Date(transDate.getTime()));
-        ps.setDouble(7, total);
+        ps.setDate(5, new java.sql.Date(transDate.getTime()));
+        ps.setDouble(6, total);
         
         ps.executeUpdate();
         
@@ -268,9 +255,8 @@ public class Transaction implements Serializable {
             tran.setCustomerID(result.getInt("customer_id"));
             tran.setReservationID(result.getInt("reservation_id"));
             
-            tran.setCc_num(result.getString("cc_num"));
-            tran.setCc_exp(result.getDate("cc_exp"));
-            tran.setCc_crc(result.getInt("cc_crc"));
+            tran.setChargeType(result.getString("charge_type"));
+            tran.setChargeDescription(result.getString("charge_description"));
             
             tran.setTranDate(result.getDate("tran_date"));
             tran.setTotal(result.getDouble("total"));

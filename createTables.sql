@@ -63,6 +63,7 @@ CREATE TABLE rooms (
   room_number INTEGER,
   department text,
   price real,
+  wing text,
   primary key (room_number)
 );
 
@@ -91,7 +92,220 @@ CREATE TABLE transactions (
 	foreign key (reservation_id) references reservation (reservation_id)
 );
 
-INSERT INTO rooms (room_number, department) VALUES (101, '');
+-- rooms, floor 1 --
+INSERT INTO rooms (department, price, wing) VALUES ('medical', 100, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('medical', 100, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('medical', 100, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('medical', 100, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('medical', 100, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('medical', 100, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('medical', 100, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('medical', 100, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('medical', 100, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('medical', 100, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('medical', 100, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('medical', 100, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('medical', 100, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('medical', 100, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('medical', 100, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('medical', 100, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('medical', 100, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('medical', 100, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('medical', 100, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('medical', 100, 'left');
 
+INSERT INTO rooms (department, price, wing) VALUES ('respiratory', 100, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('respiratory', 100, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('respiratory', 100, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('respiratory', 100, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('respiratory', 100, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('respiratory', 100, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('respiratory', 100, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('respiratory', 100, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('respiratory', 100, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('respiratory', 100, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('respiratory', 100, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('respiratory', 100, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('respiratory', 100, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('respiratory', 100, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('respiratory', 100, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('respiratory', 100, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('respiratory', 100, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('respiratory', 100, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('respiratory', 100, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('respiratory', 100, 'right');
 
+-- floor 2 --
+INSERT INTO rooms (department, price, wing) VALUES ('womens', 200, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('womens', 200, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('womens', 200, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('womens', 200, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('womens', 200, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('womens', 200, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('womens', 200, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('womens', 200, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('womens', 200, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('womens', 200, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('womens', 200, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('womens', 200, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('womens', 200, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('womens', 200, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('womens', 200, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('womens', 200, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('womens', 200, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('womens', 200, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('womens', 200, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('womens', 200, 'left');
+
+INSERT INTO rooms (department, price, wing) VALUES ('post-womens', 200, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('post-womens', 200, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('post-womens', 200, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('post-womens', 200, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('post-womens', 200, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('post-womens', 200, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('post-womens', 200, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('post-womens', 200, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('post-womens', 200, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('post-womens', 200, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('post-womens', 200, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('post-womens', 200, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('post-womens', 200, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('post-womens', 200, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('post-womens', 200, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('post-womens', 200, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('post-womens', 200, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('post-womens', 200, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('post-womens', 200, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('post-womens', 200, 'right');
+
+-- floor 3 -- 
+INSERT INTO rooms (department, price, wing) VALUES ('orthopedic', 300, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('orthopedic', 300, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('orthopedic', 300, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('orthopedic', 300, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('orthopedic', 300, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('orthopedic', 300, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('orthopedic', 300, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('orthopedic', 300, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('orthopedic', 300, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('orthopedic', 300, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('orthopedic', 300, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('orthopedic', 300, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('orthopedic', 300, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('orthopedic', 300, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('orthopedic', 300, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('orthopedic', 300, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('orthopedic', 300, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('orthopedic', 300, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('orthopedic', 300, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('orthopedic', 300, 'left');
+
+INSERT INTO rooms (department, price, wing) VALUES ('neurology', 300, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('neurology', 300, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('neurology', 300, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('neurology', 300, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('neurology', 300, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('neurology', 300, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('neurology', 300, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('neurology', 300, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('neurology', 300, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('neurology', 300, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('neurology', 300, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('neurology', 300, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('neurology', 300, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('neurology', 300, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('neurology', 300, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('neurology', 300, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('neurology', 300, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('neurology', 300, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('neurology', 300, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('neurology', 300, 'right');
+
+-- floor 4 --
+INSERT INTO rooms (department, price, wing) VALUES ('surgery', 400, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('surgery', 400, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('surgery', 400, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('surgery', 400, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('surgery', 400, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('surgery', 400, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('surgery', 400, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('surgery', 400, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('surgery', 400, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('surgery', 400, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('surgery', 400, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('surgery', 400, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('surgery', 400, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('surgery', 400, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('surgery', 400, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('surgery', 400, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('surgery', 400, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('surgery', 400, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('surgery', 400, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('surgery', 400, 'left');
+
+INSERT INTO rooms (department, price, wing) VALUES ('oncology', 400, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('oncology', 400, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('oncology', 400, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('oncology', 400, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('oncology', 400, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('oncology', 400, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('oncology', 400, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('oncology', 400, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('oncology', 400, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('oncology', 400, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('oncology', 400, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('oncology', 400, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('oncology', 400, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('oncology', 400, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('oncology', 400, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('oncology', 400, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('oncology', 400, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('oncology', 400, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('oncology', 400, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('oncology', 400, 'right');
+
+-- floor 5 --
+INSERT INTO rooms (department, price, wing) VALUES ('ICU', 500, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('ICU', 500, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('ICU', 500, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('ICU', 500, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('ICU', 500, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('ICU', 500, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('ICU', 500, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('ICU', 500, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('ICU', 500, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('ICU', 500, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('ICU', 500, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('ICU', 500, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('ICU', 500, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('ICU', 500, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('ICU', 500, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('ICU', 500, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('ICU', 500, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('ICU', 500, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('ICU', 500, 'left');
+INSERT INTO rooms (department, price, wing) VALUES ('ICU', 500, 'left');
+
+INSERT INTO rooms (department, price, wing) VALUES ('CCU', 500, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('CCU', 500, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('CCU', 500, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('CCU', 500, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('CCU', 500, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('CCU', 500, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('CCU', 500, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('CCU', 500, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('CCU', 500, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('CCU', 500, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('CCU', 500, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('CCU', 500, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('CCU', 500, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('CCU', 500, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('CCU', 500, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('CCU', 500, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('CCU', 500, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('CCU', 500, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('CCU', 500, 'right');
+INSERT INTO rooms (department, price, wing) VALUES ('CCU', 500, 'right');
+
+-- admin -- 
 INSERT INTO staff VALUES (0, 'Admin', 'admin', 'admin', TRUE);

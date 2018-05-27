@@ -45,10 +45,6 @@ public class Patient implements Serializable {
     private Date created_date;
     private String username;
     private String password;
-    private String email;
-    private String cc_num;
-    private Date cc_exp;
-    private Integer cc_crc;
 
     public Integer getPatientID() throws SQLException {
         if (patientID == null) {
@@ -201,38 +197,6 @@ public class Patient implements Serializable {
         this.password = password;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getCc_num() {
-        return cc_num;
-    }
-
-    public void setCc_num(String cc_num) {
-        this.cc_num = cc_num;
-    }
-
-    public Date getCc_exp() {
-        return cc_exp;
-    }
-
-    public void setCc_exp(Date cc_exp) {
-        this.cc_exp = cc_exp;
-    }
-
-    public Integer getCc_crc() {
-        return cc_crc;
-    }
-
-    public void setCc_crc(Integer cc_crc) {
-        this.cc_crc = cc_crc;
-    }
-
     public String createPatient() throws SQLException, ParseException {
         Connection con = dbConnect.getConnection();
         if (con == null) {
@@ -245,18 +209,14 @@ public class Patient implements Serializable {
         }
         PreparedStatement ps = con.prepareStatement(
             "Insert into Patient (name, address, created_date, username, " +
-                "password, email, cc_num, cc_ex, cc_crc) " +
-                "values(?,?,current_date,?,?,?,?,?,?)");
+                "password) " +
+                "values(?,?,current_date,?,?,?)");
         //preparedStatement.setInt(1, customerID);
         ps.setString(1, name);
         ps.setString(2, address);
         //preparedStatement.setDate(4, new java.sql.Date());
         ps.setString(3, username);
         ps.setString(4, password);
-        ps.setString(5, email);
-        ps.setString(6, cc_num);
-        ps.setDate(7, new java.sql.Date(cc_exp.getTime()));
-        ps.setInt(8, cc_crc);
         ps.executeUpdate();
         
         ps.close();
@@ -307,10 +267,6 @@ public class Patient implements Serializable {
             created_date = result.getDate("created_date");
             username = result.getString("username");
             password = result.getString("password");
-            email = result.getString("email");
-            cc_num = result.getString("cc_num");
-            cc_exp = result.getDate("cc_ex");
-            cc_crc = result.getInt("cc_crc");
         }
         return this;
     }
@@ -333,10 +289,6 @@ public class Patient implements Serializable {
             created_date = result.getDate("created_date");
             username = result.getString("username");
             password = result.getString("password");
-            email = result.getString("email");
-            cc_num = result.getString("cc_num");
-            cc_exp = result.getDate("cc_ex");
-            cc_crc = result.getInt("cc_crc");
         }
         return this;
     }

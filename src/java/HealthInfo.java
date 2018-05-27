@@ -56,4 +56,52 @@ public class HealthInfo {
     public void setGender(String gender){
         this.gender = gender;
     }
+    
+    public Integer getHeight(){
+        return height;
+    }
+    
+    public void setHeight(Integer height){
+        this.height = height;
+    }
+    
+    public Integer getWeight(){
+        return weight;
+    }
+    
+    public void setWeight(Integer weight){
+        this.weight = weight;
+    }
+    
+    public String getAllergies(){
+        return allergies;
+    }
+    
+    public void setAllergies(String allergies){
+        this.allergies = allergies;
+    }
+    
+    public String getConditions(){
+        return conditions;
+    }
+    
+    public void setConditions(String conditions){
+        this.conditions = conditions;
+    }
+    
+    public String getMedicine(){
+        return medicine;
+    }
+    
+    public void setMedicine(String medicine){
+        this.medicine = medicine;
+    }
+    
+    public String getInsurance(){
+        return insurance;
+    }
+    
+    public void setInsurance(String insurance){
+        this.insurance = insurance;
+    }
 }

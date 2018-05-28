@@ -178,8 +178,8 @@ public class Transaction implements Serializable {
         ps.setInt(1, c.getPatientID());
         ps.setInt(2, rID);
         
-        ps.setString(3, c.getChargeType());
-        ps.setString(4, c.getChargeDescription());
+        ps.setString(3, charge_type);
+        ps.setString(4, charge_description);
         
         ps.setDate(5, new java.sql.Date(transDate.getTime()));
         ps.setDouble(6, total);

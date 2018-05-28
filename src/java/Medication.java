@@ -19,7 +19,7 @@ import java.util.TimeZone;
 import javax.el.ELContext;
 import javax.faces.bean.ManagedProperty;
 
-@Named(value = "room")
+@Named(value = "medication")
 @SessionScoped
 @ManagedBean
 public class Medication {
@@ -58,7 +58,7 @@ public class Medication {
         this.duration = duration;
     }
     
-    public Room getMedication() throws SQLException {
+    public Medication getMedication() throws SQLException {
         Connection con = dbConnect.getConnection();
 
         if (con == null) {

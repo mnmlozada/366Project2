@@ -29,13 +29,13 @@
         <managed-bean-class>Util</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
-    <managed-bean id="customer">
-        <managed-bean-name>customer</managed-bean-name>
-        <managed-bean-class>Customer</managed-bean-class>
+    <managed-bean id="patient">
+        <managed-bean-name>patient</managed-bean-name>
+        <managed-bean-class>Patient</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
         <managed-property>
             <property-name>login</property-name>
-            <value>#{login}</value>
+            <value>#{logins}</value>
         </managed-property>
     </managed-bean>
     <managed-bean id="logins">
@@ -43,13 +43,13 @@
         <managed-bean-class>Login</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean> 
-    <managed-bean id="employee">
-        <managed-bean-name>employee</managed-bean-name>
-        <managed-bean-class>Employee</managed-bean-class>
+    <managed-bean id="staff">
+        <managed-bean-name>staff</managed-bean-name>
+        <managed-bean-class>Staff</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
         <managed-property>
             <property-name>login</property-name>
-            <value>#{login}</value>
+            <value>#{logins}</value>
         </managed-property>
     </managed-bean>  
     <managed-bean id="reservation">
@@ -74,6 +74,16 @@
     <managed-bean id="transaction">
         <managed-bean-name>transaction</managed-bean-name>
         <managed-bean-class>Transaction</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="prescription">
+        <managed-bean-name>prescription</managed-bean-name>
+        <managed-bean-class>Prescription</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="health_info">
+        <managed-bean-name>health_info</managed-bean-name>
+        <managed-bean-class>HealthInfo</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
     

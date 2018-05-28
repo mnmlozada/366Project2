@@ -143,5 +143,16 @@ public class Login implements Serializable {
       }
       return "failure";
     }
+    
+     public String getMenu() {
+      if (type == ADMIN) {
+          return "_admin";
+      } else if (type == EMPLOYEE){
+        return "_staff";
+      } else if (type == CUSTOMER) {
+          return "_patient";
+      }
+      return "";
+    }
 
 }

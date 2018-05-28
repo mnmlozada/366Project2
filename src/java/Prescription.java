@@ -19,7 +19,9 @@ import java.util.TimeZone;
 import javax.el.ELContext;
 import javax.faces.bean.ManagedProperty;
 
-
+@Named(value = "prescription")
+@SessionScoped
+@ManagedBean
 public class Prescription {
     
     private DBConnect dbConnect = new DBConnect();

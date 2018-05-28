@@ -19,6 +19,9 @@ import java.util.TimeZone;
 import javax.el.ELContext;
 import javax.faces.bean.ManagedProperty;
 
+@Named(value = "health_info")
+@SessionScoped
+@ManagedBean
 public class HealthInfo {
     
     private DBConnect dbConnect = new DBConnect();

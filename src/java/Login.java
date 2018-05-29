@@ -80,7 +80,7 @@ public class Login implements Serializable {
         type = processLogin(login, password);
 
         if (type == -1) {
-            FacesMessage errorMessage = new FacesMessage("Wrong login/password");
+            FacesMessage errorMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Wrong login/password");
             throw new ValidatorException(errorMessage);
         }
     }

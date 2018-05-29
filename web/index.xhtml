@@ -1,52 +1,105 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:p="http://primefaces.org/ui"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                template="#{layoutMB.template}">
-    
-    <ui:define name="head">
-        <title>Login</title>
-    </ui:define> 
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
 
-    
-    <ui:define name="body">
-        <p:panel styleClass="card box-info" header="Login">
-        <h:form>
-            <div class="ui-g ui-fluid">       
-                    <div class="ui-g-12">
-                        <p:outputLabel for="login" value="Username"/>
-                    </div>
-                    <div class="ui-g-8">
-                        <p:inputText value="#{logins.login}" required ="true"
-                                    binding="#{logins.loginUI}"
-                                    requiredMessage="Your must enter username"
-                                    id="login"/>
-                    </div>
-                    <div class="ui-g-4">
-                        <p:message id="msgDefault" for="login"/>
-                    </div>
+<f:view contentType="text/html">
+    <h:head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+        <meta name="mobile-web-app-capable" content="yes"/>
+        <h:outputStylesheet library="css" name="prism.css"/>
+
+        <style type="text/css">
+            @media (max-width: 768px) {
+                div.ui-growl {
+                    display: none!important;
+                }
                 
-                <div class="ui-g-12">
-                        <p:outputLabel for="password" value="Password"/>
-                    </div>
-                    <div class="ui-g-8">
-                        <p:password value="#{logins.password}" required ="true"
-                                         requiredMessage="Your must enter password"
-                                         validatorMessage="Login/Password incorrect"
-                                         validator="#{logins.validate}"
-                                         id="password"/>
+                span.ui-message-error-icon {
+                    padding-top: 10px!important;
+                }
+            }
+
+            @media (min-width: 769px) {
+                div.ui-growl {
+                    display: block!important;
+                }
+
+                div.ui-messages-error {
+                    display: none!important;
+                }
+            }
+
+        </style>
+    </h:head>
+
+
+    <h:body styleClass="hold-transition login-page">
+        <p:growl sticky="true"/>
+        <div id="loader" class="load-bar" style="display: none">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+
+        <div class="login-box">
+            <div class="login-logo">
+                <p:link href="index.xhtml"><b>Hosptl</b></p:link>
+            </div>
+            <!-- /.login-logo -->
+            <div class="box login-box-body">
+                <h:form id="btn">
+                    <p class="login-box-msg">Sign in to start your session</p>
+                    <div class="form-group has-feedback">
+                        <p:inputText value="#{logins.login}" styleClass="form-control" placeholder="Username"
+                                     required="true" autocomplete="off"
+                                     binding="#{logins.loginUI}"
+                                     requiredMessage="Username is required." id="login"/>
+                        <i class="fa fa-user form-control-feedback"></i>
                     </div>
                     <div class="ui-g-4">
-                        <p:message id="msgDefault2" for="password"/>
+                        <p:message id="msgLogin" for="login"/>
                     </div>
-                    
-                    <p:commandButton id="btn" action="#{logins.go}" value="Login" update="@form"
-                                          validateClient="true"  styleClass="btn-primary"/>
+                    <p:spacer height="10"/>
+                    <div class="form-group has-feedback">
+                        <p:inputText value="#{logins.password}" type="password" styleClass="form-control"
+                                     placeholder="Password" required="true" autocomplete="off"
+                                     requiredMessage="Password is required."
+                                     validator="#{logins.validate}" id="password"/>
+                        <i class="fa fa-lock form-control-feedback" ></i>
+                    </div>
+                    <div class="ui-g-4">
+                        <p:message id="msgPassword" for="password"/>
+                    </div>
+                    <p:spacer height="10"/>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <p:commandButton styleClass="btn btn-success btn-block"
+                                             value="Sign In" validateClient="true"
+                                             action="#{logins.go}" update="@form"/>
+                        </div>
+                    </div>
+   
+                </h:form>
+
+                <p:spacer height="10"/>
+                <a href="#" class="text-center">Register a new patient account</a>
+
             </div>
-        </h:form>
-        </p:panel>
-    </ui:define>
-    
-</ui:composition>
+            <!-- /.login-box-body -->
+        </div>
+        <h:outputScript library="js" name="prism.js"  target="head"/>
+        <h:outputScript library="js" name="admintemplate.js"  target="head"/>
+
+        <style type="text/css">
+            body .load-bar {
+                margin-top: -20px;
+            }
+        </style>
+    </h:body>
+</f:view>
+</html>

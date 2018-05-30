@@ -1,35 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"   xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core">
-    <h:head>
-        <link href="css/stylesheet.css" rel="stylesheet" type="text/css" />
-        <h1>View All Staff</h1>
-    </h:head>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="#{layoutMB.template}">
 
-    <h:body>
-        <h:dataTable value="#{staff.adminGetStaffList()}" var="s" border="1">
-            <h:column>
-                <f:facet name="header"> Staff ID </f:facet>
-                    #{s.staffID}
-            </h:column>
+    
+    <ui:param name="title" value="Manage Staff Members"/>
 
-            <h:column>
-                <f:facet name="header"> Name </f:facet>
-                    #{s.name}
-            </h:column>
-            
-            <h:column>
-                <f:facet name="header"> Username </f:facet>
-                    #{s.username}
-            </h:column>
-            
-            <h:column>
-                <f:facet name="header"> Password </f:facet>
-                    #{s.password}
-            </h:column>
+    <ui:define name="body">
+        <p:panel styleClass="card box-info" header="Manage Staff Members">
+            <h:form prependId="false" id="listForm">
 
-        </h:dataTable>
-    </h:body>
-</html>
+                <div id="datatable">
+                    <p:dataTable var="s" id="list" value="#{staffFilterView.staffList}" widgetVar="staffTable" paginator="true" styleClass="header-right"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="15,25,50" rows="15" rowKey="#{s.staffID}"
+                                 emptyMessage="No staff found with given criteria" stickyHeader="true"
+                                 selectionMode="single"
+                                 filteredValue="#{staffFilterView.filteredStaff}"
+                                 >
+
+                        <p:column filterBy="#{s.staffID}" sortBy="#{s.staffID}" headerText="Id"
+                                  filterMatchMode="contains" priority="1">
+                            <h:outputText value="#{s.staffID}"/>
+                        </p:column>
+
+                        <p:column filterBy="#{s.name}" sortBy="#{s.name}" headerText="Name" filterMatchMode="contains"
+                                  priority="2">
+                            <h:outputText value="#{s.name}"/>
+                        </p:column>
+                        
+                        <p:column filterBy="#{s.username}" sortBy="#{s.username}" headerText="Username" filterMatchMode="contains"
+                                  priority="3">
+                            <h:outputText value="#{s.username}"/>
+                        </p:column>
+                        
+                        <p:column filterBy="#{s.position}" sortBy="#{s.position}" headerText="Position" filterMatchMode="contains"
+                                  priority="4">
+                            <h:outputText value="#{s.position}"/>
+                        </p:column>
+                        
+                        <p:column headerText="Delete">
+                            <p:commandButton styleClass="btn btn-danger btn-block"
+                                             value="Delete" update=":listForm" 
+                                             action="#{staffFilterView.delete(s)}"/>
+                        </p:column>
+
+             
+                    </p:dataTable>
+                </div>
+             </h:form>
+        </p:panel>
+        </ui:define>
+</ui:composition>

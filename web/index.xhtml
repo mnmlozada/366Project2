@@ -66,7 +66,7 @@
                     </div>
                     <p:spacer height="10"/>
                     <div class="form-group has-feedback">
-                        <p:inputText value="#{logins.password}" type="password" styleClass="form-control"
+                        <p:password value="#{logins.password}" styleClass="form-control"
                                      placeholder="Password" required="true" autocomplete="off"
                                      requiredMessage="Password is required."
                                      validator="#{logins.validate}" id="password"/>
@@ -85,9 +85,6 @@
                     </div>
    
                 </h:form>
-
-                <p:spacer height="10"/>
-                <a href="#" class="text-center">Register a new patient account</a>
 
             </div>
             <!-- /.login-box-body -->

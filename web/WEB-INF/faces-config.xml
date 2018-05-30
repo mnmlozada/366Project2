@@ -51,6 +51,15 @@
             <property-name>login</property-name>
             <value>#{logins}</value>
         </managed-property>
+    </managed-bean> 
+    <managed-bean id="stafffv">
+        <managed-bean-name>staffFilterView</managed-bean-name>
+        <managed-bean-class>StaffFilterView</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+        <managed-property>
+            <property-name>staff</property-name>
+            <value>#{staff}</value>
+        </managed-property>
     </managed-bean>  
     <managed-bean id="reservation">
         <managed-bean-name>reservation</managed-bean-name>
@@ -97,11 +106,11 @@
         </navigation-case>
         <navigation-case>
             <from-outcome>successEmployee</from-outcome>
-            <to-view-id>/startEmployee.xhtml</to-view-id>
+            <to-view-id>/startStaff.xhtml</to-view-id>
         </navigation-case>
         <navigation-case>
             <from-outcome>successCustomer</from-outcome>
-            <to-view-id>/startCustomer.xhtml</to-view-id>
+            <to-view-id>/startPatient.xhtml</to-view-id>
         </navigation-case>
         <navigation-case>
             <from-outcome>newUser</from-outcome>
@@ -150,23 +159,13 @@
         </navigation-case>
     </navigation-rule>
      
-    <navigation-rule id="add_employee">
+    <navigation-rule id="add_staff">
         <from-view-id>
-            /addEmployee.xhtml
+            /addStaff.xhtml
         </from-view-id>
         <navigation-case>
             <from-outcome>main</from-outcome>
-            <to-view-id>/startAdmin.xhtml</to-view-id>
-        </navigation-case>
-    </navigation-rule>
-     
-    <navigation-rule id="delete_employee">
-        <from-view-id>
-            /deleteEmployee.xhtml
-        </from-view-id>
-        <navigation-case>
-            <from-outcome>main</from-outcome>
-            <to-view-id>/startAdmin.xhtml</to-view-id>
+            <to-view-id>/listStaff.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
      
@@ -219,64 +218,6 @@
             <to-view-id>/startEmployee.xhtml</to-view-id>
         </navigation-case>
      </navigation-rule>
-     
-    <navigation-rule id="start_employee">
-        <from-view-id>
-            /startEmployee.xhtml
-        </from-view-id>
-        <navigation-case>
-            <from-outcome>changePassword</from-outcome>
-            <to-view-id>/changePassword.xhtml</to-view-id>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>listPrices</from-outcome>
-            <to-view-id>/listPricesSearch.xhtml</to-view-id>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>checkInCustomer</from-outcome>
-            <to-view-id>/enterCustomerToCheckIn.xhtml</to-view-id>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>checkOutCustomer</from-outcome>
-            <to-view-id>/enterCustomerToCheckOut.xhtml</to-view-id>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>addCharges</from-outcome>
-            <to-view-id>/enterCustomerToAddCharges.xhtml</to-view-id>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>listReservations</from-outcome>
-            <to-view-id>/listReservations.xhtml</to-view-id>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>findReservation</from-outcome>
-            <to-view-id>/findReservation.xhtml</to-view-id>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>cancelReservation</from-outcome>
-            <to-view-id>/cancelReservation.xhtml</to-view-id>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>createReservation</from-outcome>
-            <to-view-id>/createReservation.xhtml</to-view-id>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>newCustomer</from-outcome>
-            <to-view-id>/newCustomer.xhtml</to-view-id>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>listCustomers</from-outcome>
-            <to-view-id>/showAllCustomers.xhtml</to-view-id>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>findCustomer</from-outcome>
-            <to-view-id>/findCustomer.xhtml</to-view-id>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>deleteCustomer</from-outcome>
-            <to-view-id>/deleteCustomer.xhtml</to-view-id>
-        </navigation-case>
-    </navigation-rule>
     
     <navigation-rule id="enter_customer_to_check_in">
         <from-outcome>enterCustomerToCheckIn</from-outcome>
@@ -338,58 +279,6 @@
         </navigation-case>
      </navigation-rule>
     
-    <navigation-rule id="start_customer">
-        <from-view-id>
-            /startCustomer.xhtml
-        </from-view-id>
-        <navigation-case>
-            <from-outcome>listMyReservations</from-outcome>
-            <to-view-id>/listMyReservations.xhtml</to-view-id>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>cancelReservation</from-outcome>
-            <to-view-id>/cancelMyReservation.xhtml</to-view-id>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>createReservation</from-outcome>
-            <to-view-id>/createReservationCust.xhtml</to-view-id>
-        </navigation-case>
-    </navigation-rule>
-    
-    <navigation-rule id="start_admin">
-        <from-view-id>
-            /startAdmin.xhtml
-        </from-view-id>
-        <navigation-case>
-            <from-outcome>changePassword</from-outcome>
-            <to-view-id>/changePassword.xhtml</to-view-id>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>listPrices</from-outcome>
-            <to-view-id>/listPricesSearch.xhtml</to-view-id>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>changePrices</from-outcome>
-            <to-view-id>/changePrices.xhtml</to-view-id>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>changePricesAll</from-outcome>
-            <to-view-id>/changePricesAll.xhtml</to-view-id>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>addEmployee</from-outcome>
-            <to-view-id>/addEmployee.xhtml</to-view-id>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>deleteEmployee</from-outcome>
-            <to-view-id>/deleteEmployee.xhtml</to-view-id>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>listEmployees</from-outcome>
-            <to-view-id>/listEmployees.xhtml</to-view-id>
-        </navigation-case>
-    </navigation-rule>
-    
     <navigation-rule id="new_customer">
         <from-view-id>
             /newCustomer.xhtml
@@ -436,6 +325,10 @@
         </from-view-id>
         <navigation-case>
             <from-outcome>successAdmin</from-outcome>
+            <to-view-id>/index.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>successPatient</from-outcome>
             <to-view-id>/index.xhtml</to-view-id>
         </navigation-case>
         <navigation-case>

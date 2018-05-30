@@ -46,6 +46,16 @@ public class Staff implements Serializable {
     private String newPass1;
     private String newPass2;
     private UIInput newPass1UI;
+    
+    private List filteredStaff;
+
+    public List getFilteredStaff() {
+        return filteredStaff;
+    }
+
+    public void setFilteredStaff(List filteredStaff) {
+        this.filteredStaff = filteredStaff;
+    }
 
     public String getPosition() {
         return position;
@@ -165,7 +175,7 @@ public class Staff implements Serializable {
         return "main";
     }
 
-    public String deleteStaff() throws SQLException, ParseException {
+    public void deleteStaff() throws SQLException, ParseException {
         Connection con = dbConnect.getConnection();
 
         if (con == null) {
@@ -178,8 +188,8 @@ public class Staff implements Serializable {
         statement.close();
         con.commit();
         con.close();
-        Util.invalidateUserSession();
-        return "main";
+        //Util.invalidateUserSession();
+        //return "main";
     }
 
     public String showStaff() {

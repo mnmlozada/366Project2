@@ -102,7 +102,7 @@ public class Login implements Serializable {
         preparedStatement.setString(2, password);
         ResultSet rs = preparedStatement.executeQuery();
         while (rs.next()) {
-            userId = rs.getInt("customer_id");
+            userId = rs.getInt("patient_id");
             result = CUSTOMER;
         }
         statement.close();
@@ -111,13 +111,13 @@ public class Login implements Serializable {
         if (result == -1) {
             statement = con.createStatement();
 
-            preparedStatement = con.prepareStatement("SELECT * FROM employee WHERE username = ? AND password = ?");
+            preparedStatement = con.prepareStatement("SELECT * FROM staff WHERE username = ? AND password = ?");
             preparedStatement.setString(1, login);
             preparedStatement.setString(2, password);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 boolean adminFlag = rs.getBoolean("adminFlag");
-                userId = rs.getInt("employee_id");
+                userId = rs.getInt("staff_id");
                 if (adminFlag) {
                     result = ADMIN;
                 } else {

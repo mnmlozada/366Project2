@@ -34,7 +34,7 @@
         <managed-bean-class>Patient</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
         <managed-property>
-            <property-name>login</property-name>
+            <property-name>logins</property-name>
             <value>#{logins}</value>
         </managed-property>
     </managed-bean>
@@ -43,16 +43,16 @@
         <managed-bean-class>Login</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean> 
-    <managed-bean id="staff">
+    <managed-bean id="staffs">
         <managed-bean-name>staff</managed-bean-name>
         <managed-bean-class>Staff</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
         <managed-property>
-            <property-name>login</property-name>
+            <property-name>logins</property-name>
             <value>#{logins}</value>
         </managed-property>
     </managed-bean> 
-    <managed-bean id="stafffv">
+    <managed-bean id="staffv">
         <managed-bean-name>staffFilterView</managed-bean-name>
         <managed-bean-class>StaffFilterView</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
@@ -60,14 +60,23 @@
             <property-name>staff</property-name>
             <value>#{staff}</value>
         </managed-property>
+    </managed-bean> 
+    <managed-bean id="roomv">
+        <managed-bean-name>roomFilterView</managed-bean-name>
+        <managed-bean-class>RoomFilterView</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+        <managed-property>
+            <property-name>room</property-name>
+            <value>#{room}</value>
+        </managed-property>
     </managed-bean>  
     <managed-bean id="reservation">
         <managed-bean-name>reservation</managed-bean-name>
         <managed-bean-class>Reservation</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
         <managed-property>
-            <property-name>login</property-name>
-            <value>#{login}</value>
+            <property-name>logins</property-name>
+            <value>#{logins}</value>
         </managed-property>
     </managed-bean> 
     <managed-bean id="room">
@@ -156,16 +165,6 @@
         <navigation-case>
             <from-outcome>logout</from-outcome>
             <to-view-id>/index.xhtml</to-view-id>
-        </navigation-case>
-    </navigation-rule>
-     
-    <navigation-rule id="add_staff">
-        <from-view-id>
-            /addStaff.xhtml
-        </from-view-id>
-        <navigation-case>
-            <from-outcome>main</from-outcome>
-            <to-view-id>/listStaff.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
      
@@ -259,15 +258,6 @@
         <to-view-id>/startEmployee.xhtml</to-view-id>
     </navigation-rule>
     
-    <navigation-rule id="change_prices">
-        <from-view-id>
-            /changePrices.xhtml
-        </from-view-id>
-        <navigation-case>
-            <from-outcome>main</from-outcome>
-            <to-view-id>/startAdmin.xhtml</to-view-id>
-        </navigation-case>
-     </navigation-rule>
      
      <navigation-rule id="change_prices">
         <from-view-id>
@@ -319,21 +309,4 @@
         </navigation-case>
     </navigation-rule>
     
-    <navigation-rule id="change_password">
-        <from-view-id>
-            /changePassword.xhtml
-        </from-view-id>
-        <navigation-case>
-            <from-outcome>successAdmin</from-outcome>
-            <to-view-id>/index.xhtml</to-view-id>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>successPatient</from-outcome>
-            <to-view-id>/index.xhtml</to-view-id>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>success</from-outcome>
-            <to-view-id>/index.xhtml</to-view-id>
-        </navigation-case>
-    </navigation-rule>    
 </faces-config>

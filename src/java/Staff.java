@@ -8,30 +8,28 @@ import java.sql.Statement;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.ManagedBean;
+import javax.faces.bean.ManagedBean;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
-import javax.inject.Named;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.component.UIInput;
 
-@Named(value = "staff")
+@ManagedBean(name="staff")
 @SessionScoped
-@ManagedBean
 public class Staff implements Serializable {
 
-    @ManagedProperty(value = "#{login}")
-    private Login login;
+    @ManagedProperty(value = "#{logins}")
+    private Login logins;
 
-    public Login getLogin() {
-        return login;
+    public Login getLogins() {
+        return logins;
     }
 
-    public void setLogin(Login login) {
-        this.login = login;
+    public void setLogins(Login logins) {
+        this.logins = logins;
     }
 
     private DBConnect dbConnect = new DBConnect();
@@ -172,7 +170,7 @@ public class Staff implements Serializable {
         con.commit();
         con.close();
         //Util.invalidateUserSession();
-        return "main";
+        return "/listStaff.xhtml?faces-redirect=true";
     }
 
     public void deleteStaff() throws SQLException, ParseException {
@@ -367,7 +365,7 @@ public class Staff implements Serializable {
     public void validateCurPass(FacesContext context, UIComponent component, Object value)
             throws ValidatorException, SQLException { 
         curPass = value.toString();
-        if (!curPass.equals(login.getPassword())) {
+        if (!curPass.equals(logins.getPassword())) {
             FacesMessage errorMessage = new FacesMessage("Current password is not correct.");
             throw new ValidatorException(errorMessage);
         }
@@ -380,14 +378,14 @@ public class Staff implements Serializable {
             throw new SQLException("Can't get database connection");
         }
 
-        PreparedStatement ps = con.prepareStatement("update staff set password = '" + newPass1 + "' where staff_id = " + login.getUserId());
+        PreparedStatement ps = con.prepareStatement("update staff set password = '" + newPass1 + "' where staff_id = " + logins.getUserId());
         ps.executeUpdate();
         
-        login.setPassword(newPass1);
+        logins.setPassword(newPass1);
         
-        if (login.getType() == Login.ADMIN) {
-            return "successAdmin";
+        if (logins.getType() == Login.ADMIN) {
+            return "/index.xhtml?faces-redirect=true";
         }
-        return "success";
+        return "/index.xhtml?faces-redirect=true";
     }
 }

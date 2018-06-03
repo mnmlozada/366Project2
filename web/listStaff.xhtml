@@ -10,7 +10,7 @@
     <ui:param name="title" value="Manage Staff Members"/>
 
     <ui:define name="body">
-        <p:panel styleClass="card box-info" header="Manage Staff Members">
+        <p:panel styleClass="card box-info" header="Staff Members">
             <h:form prependId="false" id="listForm">
 
                 <div id="datatable">
@@ -39,7 +39,7 @@
                         
                         <p:column filterBy="#{s.position}" sortBy="#{s.position}" headerText="Position" filterMatchMode="contains"
                                   priority="4">
-                            <h:outputText value="#{s.position}"/>
+                            <h:outputText value="#{s.position.toUpperCase()}"/>
                         </p:column>
                         
                         <p:column headerText="Delete">

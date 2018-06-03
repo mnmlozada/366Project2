@@ -51,11 +51,11 @@ public class Login implements Serializable {
         this.loginUI = loginUI;
     }
 
-    public String getLogin() {
+    public String getLogins() {
         return login;
     }
 
-    public void setLogin(String login) {
+    public void setLogins(String login) {
         this.login = login;
     }
 

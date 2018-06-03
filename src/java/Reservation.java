@@ -30,15 +30,15 @@ public class Reservation implements Serializable {
     private static final long ONE_DAY_MILLISECONDS = 86400000;
     private static final double DEFAULT_RATE = 100.0;
     
-    @ManagedProperty(value = "#{login}")
-    private Login login;
+    @ManagedProperty(value = "#{logins}")
+    private Login logins;
 
-    public Login getLogin() {
-        return login;
+    public Login getLogins() {
+        return logins;
     }
 
-    public void setLogin(Login login) {
-        this.login = login;
+    public void setLogin(Login logins) {
+        this.logins = logins;
     }
     
     private final DBConnect dbConnect = new DBConnect();
@@ -213,8 +213,8 @@ public class Reservation implements Serializable {
             ResultSet result = ps.executeQuery();
             if (result.next()) {
                 roomId = result.getInt("room_number");
-                if (login.getType() == Login.CUSTOMER) {
-                    customerId = login.getUserId();
+                if (logins.getType() == Login.CUSTOMER) {
+                    customerId = logins.getUserId();
                 }
             }
             else {
@@ -316,7 +316,7 @@ public class Reservation implements Serializable {
             throw new SQLException("Can't get database connection");
         }
         
-        if (login.getType() == Login.CUSTOMER) {
+        if (logins.getType() == Login.CUSTOMER) {
             reservationId = Integer.parseInt(value.toString());
             PreparedStatement ps = con.prepareStatement(
                 "select * from reservation " +
@@ -332,7 +332,7 @@ public class Reservation implements Serializable {
             ps.close();
             con.close();
 
-            if (login.getUserId() != customerId) {
+            if (logins.getUserId() != customerId) {
                 FacesMessage errorMessage = new FacesMessage(
                     "Reservation does not exist or is not your own reservation."
                 );
@@ -423,7 +423,7 @@ public class Reservation implements Serializable {
 
         PreparedStatement ps = con.prepareStatement(
             "select * from reservation " +
-            "where customer_id = " + login.getUserId() + " order by start_date"
+            "where customer_id = " + logins.getUserId() + " order by start_date"
         );
 
         //get employee data from database

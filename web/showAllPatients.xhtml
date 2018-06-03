@@ -1,34 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"   xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core">
-    <h:head>
-        <link href="css/stylesheet.css" rel="stylesheet" type="text/css" />
-        <h1>Patients</h1>
-    </h:head>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="#{layoutMB.template}">
 
-    <h:body>
-        <h:dataTable value="#{patient.getCustomerList()}" var="p" border="1">
-            <h:column>
-                <f:facet name="header"> Customer ID </f:facet>
-                    #{p.patientID}
-            </h:column>
+    
+    <ui:param name="title" value="Manage vPatients"/>
 
-            <h:column>
-                <f:facet name="header"> Name </f:facet>
-                    #{p.name}
-            </h:column>
+    <ui:define name="body">
+        <p:panel styleClass="card box-info" header="Patients">
+            <h:form prependId="false" id="listForm">
 
-            <h:column>
-                <f:facet name="header"> Address</f:facet>
-                    #{p.address}
-            </h:column>
+                <div id="datatable">
+                    <p:dataTable var="p" id="list" value="#{patientFilterView.patientList}" widgetVar="patientTable" paginator="true" styleClass="header-right"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="40, 80, 160" rows="40" rowKey="#{p.patientID}"
+                                 emptyMessage="No patients found with given criteria" stickyHeader="true"
+                                 selectionMode="single"
+                                 filteredValue="#{patientFilterView.filteredPatient}"
+                                 >
 
-            <h:column>
-                <f:facet name="header">Created Date</f:facet>
-                    #{p.created_date}
-            </h:column>
-        </h:dataTable>
-    </h:body>
-</html>
+                        <p:column filterBy="#{p.name}" sortBy="#{p.name}" headerText="Name"
+                                  filterMatchMode="contains" priority="1">
+                            <h:outputText value="#{p.name}"/>
+                        </p:column>
+                        
+                        <p:column filterBy="#{p.address}" sortBy="#{p.address}" headerText="Address"
+                                  filterMatchMode="contains" priority="2">
+                            <h:outputText value="#{p.address}"/>
+                        </p:column>
+                        
+                        <p:column filterBy="#{p.username}" sortBy="#{p.username}" headerText="Username"
+                                  filterMatchMode="contains" priority="3">
+                            <h:outputText value="#{p.username}"/>
+                        </p:column>
+                        
+                        <p:column filterBy="#{p.created_date}" sortBy="#{p.created_date}" headerText="Account Created"
+                                  filterMatchMode="contains" priority="4">
+                            <h:outputText value="#{p.created_date}"/>
+                        </p:column>
+                        
+                        <p:column filterBy="#{p.room.roomNumber}" sortBy="#{p.room.roomNumber}" headerText="Current Room"
+                                  filterMatchMode="contains" priority="5">
+                            <h:outputText value="#{p.room.roomNumber}"/>
+                        </p:column>
+                        
+                        <p:column headerText="View Record">
+                            <p:commandButton styleClass="btn btn-info btn-block"
+                                             value="View Record" action="#{patientFilterView.view(s)}"/>
+                        </p:column>
+                        
+                        <p:column headerText="Delete Records">
+                            <p:commandButton styleClass="btn btn-danger btn-block"
+                                             value="Delete" update=":listForm" 
+                                             action="#{patientFilterView.delete(s)}"/>
+                        </p:column>
+
+                        
+                    </p:dataTable>
+                </div>
+             </h:form>
+        </p:panel>
+        </ui:define>
+</ui:composition>

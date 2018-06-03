@@ -1,43 +1,58 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <title>Add Staff</title>
-    <h:head>
-        <link href="css/stylesheet.css" rel="stylesheet" type="text/css" />
-        <h1>Add Staff</h1>
-    </h:head>
-    <h:body>
-        <h:form>
-            <h:panelGrid columns="3">
-                
-                Name: <h:inputText value="#{staff.name}" required ="true"
-                   requiredMessage="Your must enter Patient Name"
-                   id="staffName"/>
-                <h:message for="staffName" style="color:red;margin:8px;"/>    
-                
-                Username: <h:inputText value="#{staff.username}" required ="true"
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:adm="http://github.com/adminfaces"
+                template="#{layoutMB.template}">
+    
+    <ui:param name="title" value="Add Staff Member"/>
+
+    <ui:define name="body">
+        <p:panel styleClass="card box-info" >
+            <h:form>
+                <p:panelGrid columns="3" columnClasses="ui-grid-col-2,ui-grid-col-2, ui-grid-col-4"
+                             layout="grid">
+                    
+                    <p:outputLabel for="staffName" value="Name"/>
+                    <p:inputText value="#{staff.name}" required ="true"
+                    requiredMessage="Your must enter Staff Name"
+                    id="staffName"/>
+                    <p:message id="msg1" for="staffName"/>
+                    
+                    <p:outputLabel for="position" value="Position"/>
+                    <p:selectOneMenu id="position" value="#{staff.position}" required="true">
+                            <f:selectItem itemLabel="Select"/>
+                            <f:selectItem itemLabel="Doctor" itemValue="doctor"/>
+                            <f:selectItem itemLabel="Nurse" itemValue="nurse"/>
+                    </p:selectOneMenu>
+                    <p:message id="msg5" for="position"/>
+      
+                    <p:outputLabel for="staffUsername" value="Username"/>
+                    <p:inputText value="#{staff.username}" required ="true"
                                    requiredMessage="Your must enter Staff Username"
                                    validatorMessage="Username must be at least five characters"
                                    id="staffUsername">
                     <f:validateLength minimum="5"/>
-                </h:inputText>
-                <h:message for="staffUsername" style="color:red;margin:8px;"/>
-                
-                Password: <h:inputSecret value="#{staff.password}" required ="true"
+                    </p:inputText>
+                    <p:message id="msg2" for="staffUsername"/>
+
+                    <p:outputLabel for="staffPassword" value="Password"/>
+                    <p:password value="#{staff.password}" required ="true"
                                    requiredMessage="Your must enter Staff Password"
                                    validatorMessage="Password must be at least eight characters"
                                    id="staffPassword">
                     <f:validateLength minimum="8"/>
-                </h:inputSecret>
-                <h:message for="staffPassword" style="color:red;margin:8px;"/>
-                
-            </h:panelGrid>
-            <h:panelGrid>
-                <h:commandButton value="Go" action="#{staff.createStaff}"/>
-            </h:panelGrid>
-        </h:form>
-    </h:body>
-</html>
+                    </p:password>
+                    <p:message id="msgPass" for="staffPassword"/>
+
+                    <p:commandButton value="Add Staff Member" action="#{staff.createStaff}" update="@form" id="cmdBtn" styleClass="btn-primary"/>
+                 </p:panelGrid>
+            </h:form>
+        </p:panel>
+    </ui:define>
+
+</ui:composition>
+
 

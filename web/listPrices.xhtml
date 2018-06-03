@@ -1,25 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"   xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core">
-    <h:head>
-        <link href="css/stylesheet.css" rel="stylesheet" type="text/css" />
-        <h1>Room Prices On #{rates.getRatesList().get(0).getDate()}</h1>
-    </h:head>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="#{layoutMB.template}">
 
-    <h:body>
-        <h:dataTable value="#{rates.getRatesList()}" var="r" border="1">
-            <h:column>
-                <f:facet name="header"> Room Number </f:facet>
-                    #{r.roomNum}
-            </h:column>
+    
+    <ui:param name="title" value="Rooms &amp; Prices"/>
 
-            <h:column>
-                <f:facet name="header"> Rate </f:facet>
-                    $#{r.rate}
-            </h:column>
+    <ui:define name="body">
+        <p:panel styleClass="card box-info" header="Rooms">
+            <h:form prependId="false" id="listForm">
 
-        </h:dataTable>
-    </h:body>
-</html>
+                <div id="datatable">
+                    <p:dataTable var="r" id="list" value="#{roomFilterView.roomList}" widgetVar="roomTable" paginator="true" styleClass="header-right"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="40, 80, 160" rows="40" rowKey="#{r.roomNumber}"
+                                 emptyMessage="No rooms found with given criteria" stickyHeader="true"
+                                 selectionMode="single"
+                                 filteredValue="#{roomFilterView.filteredRoom}"
+                                 >
+
+                        <p:column filterBy="#{r.roomNumber}" sortBy="#{r.roomNumber}" headerText="Room Number"
+                                  filterMatchMode="contains" priority="1">
+                            <h:outputText value="#{r.roomNumber}"/>
+                        </p:column>
+
+                        <p:column filterBy="#{r.wing}" sortBy="#{r.wing}" headerText="Wing" filterMatchMode="exact"
+                                  priority="2">
+                            <f:facet name="filter">
+                                <p:selectOneMenu onchange="PF('roomTable').filter()">
+                                    <f:selectItem itemLabel="Both" itemValue="#{null}" noSelectionOption="true"/>
+                                    <f:selectItems value="#{room.getWings()}" />
+                                </p:selectOneMenu>
+                            </f:facet>
+                            <h:outputText value="#{r.wing}"/>
+                        </p:column>
+                        
+                        <p:column filterBy="#{r.department}" sortBy="#{r.department}" headerText="Department" filterMatchMode="contains"
+                                  priority="3">
+                            <f:facet name="filter">
+                                <p:selectOneMenu onchange="PF('roomTable').filter()">
+                                    <f:selectItem itemLabel="Both" itemValue="#{null}" noSelectionOption="true"/>
+                                    <f:selectItems value="#{room.getDepartments()}" />
+                                </p:selectOneMenu>
+                            </f:facet>
+                            <h:outputText value="#{r.department.toUpperCase()}"/>
+                        </p:column>
+                        
+                        <p:column filterBy="#{r.price}" sortBy="#{r.price}" headerText="Price" filterMatchMode="contains"
+                                  priority="4">
+                            <h:outputText value="$#{r.price}"/>
+                        </p:column>
+                        
+                        <p:column filterBy="#{r.occupied}" sortBy="#{r.occupied}" headerText="Occupied" filterMatchMode="contains"
+                                  priority="5">
+                            <h:outputText value="#{r.occupied}"/>
+                        </p:column>
+                        
+                        <p:column filterBy="#{r.patient.name}" sortBy="#{r.patient.name}" headerText="Current Patient" filterMatchMode="contains"
+                                  priority="6">
+                            <h:outputText value="#{r.patient.name}"/>
+                        </p:column>
+
+             
+                    </p:dataTable>
+                </div>
+             </h:form>
+        </p:panel>
+        </ui:define>
+</ui:composition>

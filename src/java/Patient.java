@@ -21,21 +21,22 @@ import javax.faces.validator.ValidatorException;
 import javax.inject.Named;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.component.UIInput;
 
 @Named(value = "patient")
 @SessionScoped
 @ManagedBean
 public class Patient implements Serializable {
 
-    @ManagedProperty(value = "#{login}")
-    private Login login;
+    @ManagedProperty(value = "#{logins}")
+    private Login logins;
 
-    public Login getLogin() {
-        return login;
+    public Login getLogins() {
+        return logins;
     }
 
-    public void setLogin(Login login) {
-        this.login = login;
+    public void setLogins(Login logins) {
+        this.logins = logins;
     }
 
     private final DBConnect dbConnect = new DBConnect();
@@ -45,6 +46,53 @@ public class Patient implements Serializable {
     private Date created_date;
     private String username;
     private String password;
+    private Room room;
+    
+    // Variables to handling password change
+    private String curPass;
+    private String newPass1;
+    private String newPass2;
+    private UIInput newPass1UI;
+
+    public String getCurPass() {
+        return curPass;
+    }
+
+    public void setCurPass(String curPass) {
+        this.curPass = curPass;
+    }
+
+    public String getNewPass1() {
+        return newPass1;
+    }
+
+    public void setNewPass1(String newPass1) {
+        this.newPass1 = newPass1;
+    }
+
+    public String getNewPass2() {
+        return newPass2;
+    }
+
+    public void setNewPass2(String newPass2) {
+        this.newPass2 = newPass2;
+    }
+
+    public UIInput getNewPass1UI() {
+        return newPass1UI;
+    }
+
+    public void setNewPass1UI(UIInput newPass1UI) {
+        this.newPass1UI = newPass1UI;
+    }
+
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+    }
 
     public Integer getPatientID() throws SQLException {
         if (patientID == null) {
@@ -226,23 +274,23 @@ public class Patient implements Serializable {
         return "main";
     }
 
-    public String deletePatient() throws SQLException, ParseException {
+    public void deletePatient() throws SQLException, ParseException {
         Connection con = dbConnect.getConnection();
         if (con == null) {
             throw new SQLException("Can't get database connection");
         }
         con.setAutoCommit(false);
 
+        System.out.println(patientID);
+        
         Statement statement = con.createStatement();
         statement.executeUpdate(
-            "Delete from Patient where patient_id = " + patientID
+            "Delete from patient where patient_id = " + patientID
         );
         statement.close();
         
         con.commit();
         con.close();
-        
-        return "main";
     }
 
     public String showPatient() {
@@ -299,11 +347,16 @@ public class Patient implements Serializable {
             throw new SQLException("Can't get database connection");
         }
 
-        PreparedStatement ps = con.prepareStatement(
+        /*PreparedStatement ps = con.prepareStatement(
             "select patient_id, name, address, created_date " +
             "from patient " +
             "order by patient_id"
-        );
+        );*/
+        
+        PreparedStatement ps
+                = con.prepareStatement(
+                        "select * from patient left join (select room_num, patient_id from reservation where checked_out = null) "
+                                + "as X on X.patient_id = patient.patient_id order by room_num desc, patient.name");
 
         //get patient data from database
         ResultSet result = ps.executeQuery();
@@ -316,7 +369,15 @@ public class Patient implements Serializable {
             pat.setName(result.getString("name"));
             pat.setAddress(result.getString("address"));
             pat.setCreated_date(result.getDate("created_date"));
-
+            pat.setUsername(result.getString("username"));
+            
+            int roomNum = result.getInt("room_num");
+            if (roomNum != 0) {
+                Room r = new Room();
+                r.setRoomNumber(roomNum);
+                pat.setRoom(r.getRoom());
+            }
+            
             //store all data into a List
             list.add(pat);
         }
@@ -327,5 +388,43 @@ public class Patient implements Serializable {
 
     public String go() {
         return "newUser";
+    }
+    
+    public void validateNewPass(FacesContext context, UIComponent component, Object value)
+            throws ValidatorException, SQLException {
+        newPass1 = newPass1UI.getLocalValue().toString();
+        newPass2 = value.toString();
+        if (!newPass1.equals(newPass2)) {
+            FacesMessage errorMessage = new FacesMessage("New passwords must match.");
+            throw new ValidatorException(errorMessage);
+        }
+        
+    }
+    
+    public void validateCurPass(FacesContext context, UIComponent component, Object value)
+            throws ValidatorException, SQLException { 
+        curPass = value.toString();
+        if (!curPass.equals(logins.getPassword())) {
+            FacesMessage errorMessage = new FacesMessage("Current password is not correct.");
+            throw new ValidatorException(errorMessage);
+        }
+        
+    }
+    
+    public String changePassword() throws SQLException {
+        Connection con = dbConnect.getConnection();
+        if (con == null) {
+            throw new SQLException("Can't get database connection");
+        }
+
+        PreparedStatement ps = con.prepareStatement("update patient set password = '" + newPass1 + "' where patient_id = " + logins.getUserId());
+        ps.executeUpdate();
+        
+        logins.setPassword(newPass1);
+        
+        if (logins.getType() == Login.ADMIN) {
+            return "/index.xhtml?faces-redirect=true";
+        }
+        return "/index.xhtml?faces-redirect=true";
     }
 }

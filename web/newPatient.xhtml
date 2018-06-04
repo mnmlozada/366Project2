@@ -1,82 +1,119 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <title>New Patient</title>
-    <h:head>
-        <link href="css/stylesheet.css" rel="stylesheet" type="text/css" />
-        <h1>New Patient</h1>
-    </h:head>
-    <h:body>
-        <h:form>
-            <h:panelGrid columns="3">
-                
-                Name: <h:inputText value="#{patient.name}" required ="true"
-                   requiredMessage="Your must enter Patient Name"
-                   id="userName"/>
-                <h:message for="userName" style="color:red;margin:8px;"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="#{layoutMB.template}">
+    
+    <ui:param name="title" value="Admit New Patient"/>
 
-                Address: <h:inputText value="#{patient.address}" required ="true"
-                                      requiredMessage="Your must enter Patient Address"
-                                      validatorMessage="Address must be at least five characters"
-                                      id="userAddress">
+    <ui:define name="body">
+        <p:panel styleClass="card box-info" >
+            <h:form>
+                    <p:steps activeIndex="0">
+                        <p:menuitem value="Patient Info"/>
+                        <p:menuitem value="Health Info"/>
+                        <p:menuitem value="Room Selection"/>
+                        <p:menuitem value="Confirmation"/>
+                    </p:steps>
+            </h:form>
+            <p:tabView>
+                <p:tab title="Find Existing Patient Record">
+                     <h:form prependId="false" id="listForms">
+                        <div id="datatable">
+                            <p:dataTable var="p" id="list" value="#{patientFilterView.outPatientList}" widgetVar="patientTable" paginator="true" styleClass="header-right"
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="40, 80, 160" rows="40" rowKey="#{p.patientID}"
+                                         emptyMessage="No patients found with given criteria" stickyHeader="false"
+                                         selectionMode="single"
+                                         filteredValue="#{patientFilterView.filteredPatient}"
+                                         >
+
+                                <p:column filterBy="#{p.name}" sortBy="#{p.name}" headerText="Name"
+                                          filterMatchMode="contains" priority="1">
+                                    <h:outputText value="#{p.name}"/>
+                                </p:column>
+
+                                <p:column filterBy="#{p.dob}" sortBy="#{p.dob}" headerText="Date of Birth"
+                                          filterMatchMode="contains" priority="1">
+                                    <h:outputText value="#{p.dob}"/>
+                                </p:column>
+
+                                <p:column filterBy="#{p.address}" sortBy="#{p.address}" headerText="Address"
+                                          filterMatchMode="contains" priority="2">
+                                    <h:outputText value="#{p.address}"/>
+                                </p:column>
+
+                                <p:column filterBy="#{p.username}" sortBy="#{p.username}" headerText="Username"
+                                          filterMatchMode="contains" priority="3">
+                                    <h:outputText value="#{p.username}"/>
+                                </p:column>
+
+                                <p:column headerText="Admit Patient">
+                                    <p:commandButton styleClass="btn btn-info btn-block"
+                                                     value="Admit Patient" action="#{patientFilterView.admit(p)}"/>
+                                </p:column>
+
+                            </p:dataTable>
+                        </div>
+                     </h:form>
+                </p:tab>
+                <p:tab title="Create New Patient Record">
+                    <h:form>
+                <p:panelGrid columns="3" columnClasses="ui-grid-col-2,ui-grid-col-2, ui-grid-col-4"
+                             layout="grid">
+                    
+                    <p:outputLabel for="patientName" value="Name"/>
+                    <p:inputText value="#{patient.name}" required ="true"
+                    requiredMessage="Your must enter patient name"
+                    id="patientName"/>
+                    <p:message id="msg1" for="patientName"/>
+                    
+                    <p:outputLabel for="patientAddr" value="Address"/>
+                    <p:inputText value="#{patient.address}" required ="true"
+                    requiredMessage="Your must enter patient address"
+                    id="patientAddr"/>
+                    <p:message id="msg2" for="patientAddr"/>
+                    
+                    <p:outputLabel for="patientDOB" value="Date of Birth"/>
+                    <p:inputText value="#{patient.dob}" required ="true"
+                    requiredMessage="Your must enter patient date of birth"
+                    converterMessage="Date must be entered in format MM/DD/YYYY"
+                    id="patientDOB">
+                        <f:convertDateTime pattern="MM/dd/yyyy"/>
+                        </p:inputText>
+                    <p:message id="msg3" for="patientDOB"/>
+                    
+      
+                    <p:outputLabel for="patientUsername" value="Username"/>
+                    <p:inputText value="#{patient.username}" required ="true"
+                                   requiredMessage="Your must enter patient username"
+                                   validatorMessage="Username already exists or is not 5 characters"
+                                   validator="#{patient.validatePatientUsername}"
+                                   id="patientUsername">
                     <f:validateLength minimum="5"/>
-                </h:inputText>
-                <h:message for="userAddress" style="color:red;margin:8px;"/>
-                
-                Username: <h:inputText value="#{patient.username}" required ="true"
-                                   requiredMessage="Your must enter Patient Username"
-                                   validatorMessage="Username must be at least five characters"
-                                   id="userUsername">
-                    <f:validateLength minimum="5"/>
-                </h:inputText>
-                <h:message for="userUsername" style="color:red;margin:8px;"/>
-                
-                Password: <h:inputSecret value="#{patient.password}" required ="true"
-                                   requiredMessage="Your must enter Patient Password"
+                    </p:inputText>
+                    <p:message id="msg4" for="patientUsername"/>
+
+                    <p:outputLabel for="patientPassword" value="Password"/>
+                    <p:password value="#{patient.password}" required ="true"
+                                   requiredMessage="Your must enter patient password"
                                    validatorMessage="Password must be at least eight characters"
-                                   id="userPassword">
+                                   id="patientPassword">
                     <f:validateLength minimum="8"/>
-                </h:inputSecret>
-                <h:message for="userPassword" style="color:red;margin:8px;"/>
-                
-                Email: <h:inputText value="#{patient.email}" required ="true"
-                                   requiredMessage="Your must enter Patient Email"
-                                   id="userEmail"/>
-                <h:message for="userEmail" style="color:red;margin:8px;"/>
-                
-                Credit Card Number: <h:inputText value="#{patient.cc_num}" required ="true"
-                                   requiredMessage="Your must enter Patient Credit Card Number"
-                                   validatorMessage="Credit Card Number must be 16 numbers"
-                                   id="userCCNum">
-                    <f:validateLength minimum="16" maximum="16"/>
-                    <f:validateRegex pattern="[0-9]*"/>
-                </h:inputText>
-                <h:message for="userCCNum" style="color:red;margin:8px;"/>
-                
-                Credit Card Expiration Date: <h:inputText value="#{patient.cc_exp}" required ="true"
-                                   requiredMessage="Your must enter Customer Credit Card Expiration Date"
-                                   validatorMessage="Credit Card Expiration Date must be in the format MM/YY"
-                                   id="userCCExpr">
-                    <f:convertDateTime pattern="mm/YY"/>
-                </h:inputText>
-                <h:message for="userCCExpr" style="color:red;margin:8px;"/>
-                
-                Credit Card CRC: <h:inputText value="#{patient.cc_crc}" required ="true"
-                                   requiredMessage="Your must enter Patient Credit Card CRC"
-                                   validatorMessage="Credit Card CRC must be 3 numbers"
-                                   id="userCCCRC">
-                    <f:validateLength minimum="3" maximum="3"/>
-                </h:inputText>
-                <h:message for="userCCCRC" style="color:red;margin:8px;"/>
+                    </p:password>
+                    <p:message id="msgPass" for="patientPassword"/>
 
-                <h:message for="userDate" style="color:red;margin:8px;"/>
-            </h:panelGrid>
-            <h:panelGrid>
-                <h:commandButton value="Go" action="#{patient.createPatient}"/>
-            </h:panelGrid>
-        </h:form>
-    </h:body>
-</html>
+                    <p:commandButton value="Proceed to Health Info" action="#{patient.createPatient}" update="@form" id="cmdBtn" styleClass="btn-primary"/>
+                 </p:panelGrid>
+            </h:form>
+                </p:tab>
+            </p:tabView>
+            
+        </p:panel>
+    </ui:define>
+
+</ui:composition>
+
 

@@ -12,9 +12,14 @@
     <ui:define name="body">
         <p:panel styleClass="card box-info" header="Rooms">
             <h:form prependId="false" id="listForm">
-
+                <p:steps activeIndex="2">
+                        <p:menuitem value="Patient Info"/>
+                        <p:menuitem value="Health Info"/>
+                        <p:menuitem value="Room Selection"/>
+                        <p:menuitem value="Confirmation"/>
+                 </p:steps>
                 <div id="datatable">
-                    <p:dataTable var="r" id="list" value="#{roomFilterView.roomList}" widgetVar="roomTable" paginator="true" styleClass="header-right"
+                    <p:dataTable var="r" id="list" value="#{roomFilterView.freeRoomList}" widgetVar="roomTable" paginator="true" styleClass="header-right"
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  rowsPerPageTemplate="40, 80, 160" rows="40" rowKey="#{r.roomNumber}"
                                  emptyMessage="No rooms found with given criteria" stickyHeader="true"
@@ -49,22 +54,10 @@
                             <h:outputText value="#{r.department.toUpperCase()}"/>
                         </p:column>
                         
-                        <p:column filterBy="#{r.price}" sortBy="#{r.price}" headerText="Price" filterMatchMode="contains"
-                                  priority="4">
-                            <h:outputText value="$#{r.price}"/>
+                        <p:column headerText="Select Room">
+                            <p:commandButton styleClass="btn btn-info btn-block"
+                                             value="Select Room" action="#{roomFilterView.admitTo(r)}"/>
                         </p:column>
-                        
-                        <p:column filterBy="#{r.occupied}" sortBy="#{r.occupied}" headerText="Occupied" filterMatchMode="contains"
-                                  priority="5">
-                            <h:outputText value="#{r.occupied}"/>
-                        </p:column>
-                        
-                        <p:column filterBy="#{r.patient.name}" sortBy="#{r.patient.name}" headerText="Current Patient" filterMatchMode="contains"
-                                  priority="6">
-                            <h:outputText value="#{r.patient.name}"/>
-                        </p:column>
-
-             
                     </p:dataTable>
                 </div>
              </h:form>

@@ -6,6 +6,7 @@ import javax.faces.bean.ViewScoped;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedProperty;
 import java.sql.SQLException;
+import org.omnifaces.util.Faces;
 
 @ManagedBean(name="patientFilterView")
 @ViewScoped
@@ -23,12 +24,14 @@ public class PatientFilterView implements Serializable {
     }
     
     private List<Patient> patientList;
+    private List<Patient> outPatientList;
     private List<Patient> filteredPatient;
     
     @PostConstruct
     public void init() {
        try {
             patientList = patient.getPatientList();
+            outPatientList = patient.getOutPatientList();
        }
        catch (SQLException ex) {
            
@@ -36,7 +39,6 @@ public class PatientFilterView implements Serializable {
     }
     
     public void delete(Patient p) {
-        System.out.println("deleting");
        try {
             p.deletePatient();
             patientList = patient.getPatientList();
@@ -44,6 +46,19 @@ public class PatientFilterView implements Serializable {
        catch (Exception ex) {
            
        }
+    }
+
+    public List<Patient> getOutPatientList() {
+        return outPatientList;
+    }
+
+    public void setOutPatientList(List<Patient> outPatientList) {
+        this.outPatientList = outPatientList;
+    }
+    
+    public String admit(Patient p) {
+        Faces.setSessionAttribute("patient", p);
+        return "/newHealthInfo.xhtml?faces-redirect=true";
     }
     
     public String view(Patient p) {

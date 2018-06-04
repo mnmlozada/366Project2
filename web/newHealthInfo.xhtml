@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:adm="http://github.com/adminfaces"
+                template="#{layoutMB.template}">
+    
+    <ui:param name="title" value="Admit New Patient"/>
+
+    <ui:define name="body">
+        <p:panel styleClass="card box-info" >
+            <h:form>
+                <p:panelGrid columns="1" columnClasses="ui-grid-col-16"
+                             layout="grid">
+                    <p:steps activeIndex="1">
+                        <p:menuitem value="Patient Info"/>
+                        <p:menuitem value="Health Info"/>
+                        <p:menuitem value="Room Selection"/>
+                        <p:menuitem value="Confirmation"/>
+                    </p:steps>
+                </p:panelGrid>
+                <p:panelGrid columns="3" columnClasses="ui-grid-col-2,ui-grid-col-2, ui-grid-col-4"
+                             layout="grid">
+                    
+                    <p:outputLabel for="gender" value="Gender"/>
+                    <p:selectOneMenu id="gender" value="#{health_info.gender}" required="true">
+                            <f:selectItem itemLabel="Select"/>
+                            <f:selectItem itemLabel="Female" itemValue="female"/>
+                            <f:selectItem itemLabel="Male" itemValue="male"/>
+                            <f:selectItem itemLabel="Other" itemValue="other"/>
+                    </p:selectOneMenu>
+                    <p:message id="msg5" for="gender"/>
+                    
+                    <p:outputLabel for="health_infoHeight" value="Height (Inches)"/>
+                    <p:inputText value="#{health_info.height}" required ="true"
+                    requiredMessage="Your must enter patient height"
+                    id="health_infoHeight"/>
+                    <p:message id="msg1" for="health_infoHeight"/>
+                    
+                    <p:outputLabel for="health_infoWeight" value="Weight (Pounds)"/>
+                    <p:inputText value="#{health_info.weight}" required ="true"
+                    requiredMessage="Your must enter patient weight"
+                    id="health_infoWeight"/>
+                    <p:message id="msg14" for="health_infoWeight"/>
+                    
+                    <p:outputLabel for="health_infoAllergies" value="Known Allergies"/>
+                    <p:inputText value="#{health_info.allergies}" required ="true"
+                    requiredMessage="Your must enter patient allergies or 'none'"
+                    id="health_infoAllergies"/>
+                    <p:message id="msg13" for="health_infoAllergies"/>
+                    
+                    <p:outputLabel for="health_infoConditions" value="Conditions &amp; Symptoms"/>
+                    <p:inputText value="#{health_info.conditions}" required ="true"
+                    requiredMessage="Your must enter patient conditions"
+                    id="health_infoConditions"/>
+                    <p:message id="msg12" for="health_infoConditions"/>
+                    
+                    <p:outputLabel for="health_infoMedicine" value="Current Medications"/>
+                    <p:inputText value="#{health_info.medicine}" required ="true"
+                    requiredMessage="Your must enter patient medications or 'none'"
+                    id="health_infoMedicine"/>
+                    <p:message id="msg11" for="health_infoMedicine"/>
+                    
+                    <p:outputLabel for="health_infoInsurance" value="Insurance Provider"/>
+                    <p:inputText value="#{health_info.insurance}" required ="true"
+                    requiredMessage="Your must enter patient insurance provider"
+                    id="health_infoInsurance"/>
+                    <p:message id="msg10" for="health_infoInsurance"/>                
+
+                    <p:commandButton value="Proceed to Room Selection" action="#{patient.updateInfo(health_info)}" update="@form" id="cmdBtn" styleClass="btn-primary"/>
+                 </p:panelGrid>
+            </h:form>
+        </p:panel>
+    </ui:define>
+
+</ui:composition>
+
+

@@ -19,14 +19,12 @@ import java.util.TimeZone;
 import javax.el.ELContext;
 import javax.faces.bean.ManagedProperty;
 
-@Named(value = "health_info")
+@javax.faces.bean.ManagedBean(name="health_info")
 @SessionScoped
-@ManagedBean
-public class HealthInfo {
+public class HealthInfo implements Serializable{
     
     private DBConnect dbConnect = new DBConnect();
     private Integer patient_id;
-    private Integer age;
     private String gender;
     private Integer height;
     private Integer weight;
@@ -34,23 +32,32 @@ public class HealthInfo {
     private String conditions;
     private String medicine;
     private String insurance;
-    
-    
-    public Integer getPatientID(){
+    private Date exam_date;
+    private Integer hi_id;
+
+    public Integer getHi_id() {
+        return hi_id;
+    }
+
+    public void setHi_id(Integer hi_id) {
+        this.hi_id = hi_id;
+    }
+
+    public Integer getPatient_id() {
         return patient_id;
     }
-    
-    public void setPatientID(Integer patient_id){
+
+    public void setPatient_id(Integer patient_id) {
         this.patient_id = patient_id;
     }
-    
-    public Integer getAge(){
-        return age;
+
+    public Date getExam_date() {
+        return exam_date;
     }
-    
-    public void setAge(Integer age){
-        this.age = age;
-    } 
+
+    public void setExam_date(Date exam_date) {
+        this.exam_date = exam_date;
+    }
     
     public String getGender(){
         return gender;

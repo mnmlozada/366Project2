@@ -135,7 +135,7 @@ public class Room implements Serializable {
 
         PreparedStatement ps
                 = con.prepareStatement(
-                        "select * from rooms left join ((select room_num, patient_id from reservation where checked_out = null) "
+                        "select * from rooms left join ((select room_num, patient_id from reservation where checked_out is null) "
                                 + "as X join patient on X.patient_id = patient.patient_id) on X.room_num = room_number order by department, room_number");
 
         ResultSet result = ps.executeQuery();
@@ -158,6 +158,42 @@ public class Room implements Serializable {
             }
             //store all data into a List
             list.add(room);
+        }
+        result.close();
+        con.close();
+        return list;
+    }
+     
+     public List<Room> getFreeRoomList() throws SQLException {
+
+        Connection con = dbConnect.getConnection();
+
+        if (con == null) {
+            throw new SQLException("Can't get database connection");
+        }
+
+        PreparedStatement ps
+                = con.prepareStatement(
+                        "select * from rooms left join ((select room_num, patient_id from reservation where checked_out is null) "
+                                + "as X join patient on X.patient_id = patient.patient_id) on X.room_num = room_number order by department, room_number");
+
+        ResultSet result = ps.executeQuery();
+
+        List<Room> list = new ArrayList<Room>();
+
+        while (result.next()) {
+            Room room = new Room();
+
+            room.setRoomNumber(result.getInt("room_number"));
+            room.setWing(result.getString("wing"));
+            room.setDepartment(result.getString("department"));
+            room.setPrice(result.getDouble("price"));
+            
+            room.setOccupied(result.getString("name") != null);
+            
+            if (!room.occupied) {
+                list.add(room);
+            }
         }
         result.close();
         con.close();

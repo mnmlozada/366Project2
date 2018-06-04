@@ -15,14 +15,16 @@ CREATE TABLE patient
   created_date date not null,
   username text not null unique,
   password text not null,
+  dob date not null,
   PRIMARY KEY (patient_id)
 );
 
 
 CREATE TABLE healthInfo
 (
+  hi_id serial,
   patient_id integer,
-  age integer,
+  exam_date date,
   gender text,
   height_inch integer,
   weight integer,
@@ -30,7 +32,7 @@ CREATE TABLE healthInfo
   conditions text,
   medicine text,
   insurance text,
-  primary key (patient_id),
+  primary key (hi_id),
   foreign key (patient_id) references patient
 );
 

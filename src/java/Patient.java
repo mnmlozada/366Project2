@@ -22,10 +22,10 @@ import javax.inject.Named;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.component.UIInput;
+import org.omnifaces.util.Faces;
 
-@Named(value = "patient")
+@javax.faces.bean.ManagedBean(name="patient")
 @SessionScoped
-@ManagedBean
 public class Patient implements Serializable {
 
     @ManagedProperty(value = "#{logins}")
@@ -47,12 +47,30 @@ public class Patient implements Serializable {
     private String username;
     private String password;
     private Room room;
+    private Date dob;
+    private HealthInfo hi;
     
     // Variables to handling password change
     private String curPass;
     private String newPass1;
     private String newPass2;
     private UIInput newPass1UI;
+
+    public HealthInfo getHi() {
+        return hi;
+    }
+
+    public void setHi(HealthInfo hi) {
+        this.hi = hi;
+    }
+    
+    public Date getDob() {
+        return dob;
+    }
+
+    public void setDob(Date dob) {
+        this.dob = dob;
+    }
 
     public String getCurPass() {
         return curPass;
@@ -94,26 +112,7 @@ public class Patient implements Serializable {
         this.room = room;
     }
 
-    public Integer getPatientID() throws SQLException {
-        if (patientID == null) {
-            Connection con = dbConnect.getConnection();
-            if (con == null) {
-                throw new SQLException("Can't get database connection");
-            }
-
-            PreparedStatement ps = con.prepareStatement(
-                "select max(patient_id) + 1 from customer"
-            );
-            
-            ResultSet result = ps.executeQuery();
-            if (!result.next()) {
-                return null;
-            }
-            patientID = result.getInt(1);
-            
-            result.close();
-            con.close();
-        }
+    public Integer getPatientID() {
         return patientID;
     }
 
@@ -177,6 +176,39 @@ public class Patient implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+    
+    public void validatePatientUsername(
+        FacesContext context,
+        UIComponent componentToValidate,
+        Object value
+    ) throws ValidatorException, SQLException {
+        
+        if (patientUsernameExists(value.toString())) {
+            FacesMessage errorMessage = new FacesMessage("Username already in use");
+            throw new ValidatorException(errorMessage);
+        }
+    }
+    
+    private boolean patientUsernameExists(String username) throws SQLException {
+        Connection con = dbConnect.getConnection();
+        if (con == null) {
+            throw new SQLException("Can't get database connection");
+        }
+
+        PreparedStatement ps = con.prepareStatement(
+            "select * from patient where username = '" + username + "'"
+        );
+
+        ResultSet result = ps.executeQuery();
+        if (result.next()) {
+            result.close();
+            con.close();
+            return true;
+        }
+        result.close();
+        con.close();
+        return false;
     }
 
     public void validatePatientName(
@@ -252,12 +284,9 @@ public class Patient implements Serializable {
         }
         con.setAutoCommit(false);
         
-        if (patientID == null) {
-            patientID = getPatientID();
-        }
         PreparedStatement ps = con.prepareStatement(
             "Insert into Patient (name, address, created_date, username, " +
-                "password) " +
+                "password, dob) " +
                 "values(?,?,current_date,?,?,?)");
         //preparedStatement.setInt(1, customerID);
         ps.setString(1, name);
@@ -265,13 +294,56 @@ public class Patient implements Serializable {
         //preparedStatement.setDate(4, new java.sql.Date());
         ps.setString(3, username);
         ps.setString(4, password);
+        ps.setDate(5, new java.sql.Date(dob.getTime()));
+        ps.executeUpdate();
+        
+        ps.close();
+        
+        ps = con.prepareStatement(
+            "select * from patient where username = " + username
+        );
+
+        ResultSet result = ps.executeQuery();
+        if (result.next()) {
+            patientID = result.getInt("patient_id");
+        }
+        
+        con.commit();
+        con.close();
+        //Util.invalidateUserSession();
+        Faces.setSessionAttribute("patient", this);
+        return "/newHealthInfo.xhtml?faces-redirect=true";
+    }
+    
+    public String updateInfo(HealthInfo hi) throws SQLException, ParseException {
+        Connection con = dbConnect.getConnection();
+        if (con == null) {
+            throw new SQLException("Can't get database connection");
+        }
+        con.setAutoCommit(false);
+       
+        PreparedStatement ps = con.prepareStatement(
+            "Insert into healthInfo (patient_id, exam_date, gender, height_inch, weight, allergies, conditions, medicine, " +
+                "insurance) " +
+                "values(?,current_date,?,?,?,?,?,?,?)");
+        //preparedStatement.setInt(1, customerID);
+        System.out.println(patientID);
+        ps.setInt(1, patientID);
+        ps.setString(2, hi.getGender());
+        //preparedStatement.setDate(4, new java.sql.Date());
+        ps.setInt(3, hi.getHeight());
+        ps.setInt(4, hi.getWeight());
+        ps.setString(5, hi.getAllergies());
+        ps.setString(6, hi.getConditions());
+        ps.setString(7, hi.getMedicine());
+        ps.setString(8, hi.getInsurance());
         ps.executeUpdate();
         
         ps.close();
         con.commit();
         con.close();
         //Util.invalidateUserSession();
-        return "main";
+        return "/selectRoom.xhtml?faces-redirect=true";
     }
 
     public void deletePatient() throws SQLException, ParseException {
@@ -284,6 +356,30 @@ public class Patient implements Serializable {
         System.out.println(patientID);
         
         Statement statement = con.createStatement();
+        statement.executeUpdate(
+            "Delete from healthInfo where patient_id = " + patientID
+        );
+        statement.close();
+        
+        statement = con.createStatement();
+        statement.executeUpdate(
+            "Delete from transactions where patient_id = " + patientID
+        );
+        statement.close();
+        
+        statement = con.createStatement();
+        statement.executeUpdate(
+            "Delete from prescription where patient_id = " + patientID
+        );
+        statement.close();
+        
+        statement = con.createStatement();
+        statement.executeUpdate(
+            "Delete from reservation where patient_id = " + patientID
+        );
+        statement.close();
+        
+        statement = con.createStatement();
         statement.executeUpdate(
             "Delete from patient where patient_id = " + patientID
         );
@@ -315,6 +411,7 @@ public class Patient implements Serializable {
             created_date = result.getDate("created_date");
             username = result.getString("username");
             password = result.getString("password");
+            dob = result.getDate("dob");
         }
         return this;
     }
@@ -337,6 +434,7 @@ public class Patient implements Serializable {
             created_date = result.getDate("created_date");
             username = result.getString("username");
             password = result.getString("password");
+            dob = result.getDate("dob");
         }
         return this;
     }
@@ -355,7 +453,7 @@ public class Patient implements Serializable {
         
         PreparedStatement ps
                 = con.prepareStatement(
-                        "select * from patient left join (select room_num, patient_id from reservation where checked_out = null) "
+                        "select * from patient left join (select room_num, patient_id from reservation where checked_out is null) "
                                 + "as X on X.patient_id = patient.patient_id order by room_num desc, patient.name");
 
         //get patient data from database
@@ -370,6 +468,7 @@ public class Patient implements Serializable {
             pat.setAddress(result.getString("address"));
             pat.setCreated_date(result.getDate("created_date"));
             pat.setUsername(result.getString("username"));
+            pat.setDob(result.getDate("dob"));
             
             int roomNum = result.getInt("room_num");
             if (roomNum != 0) {
@@ -380,6 +479,41 @@ public class Patient implements Serializable {
             
             //store all data into a List
             list.add(pat);
+        }
+        result.close();
+        con.close();
+        return list;
+    }
+    
+    public List<Patient> getOutPatientList() throws SQLException {
+        Connection con = dbConnect.getConnection();
+        if (con == null) {
+            throw new SQLException("Can't get database connection");
+        }
+        
+        PreparedStatement ps
+                = con.prepareStatement(
+                        "select * from patient left join (select room_num, patient_id from reservation where checked_out is null) "
+                                + "as X on X.patient_id = patient.patient_id order by room_num desc, patient.name");
+
+        //get patient data from database
+        ResultSet result = ps.executeQuery();
+        List<Patient> list = new ArrayList<>();
+
+        while (result.next()) {
+            Patient pat = new Patient();
+
+            pat.setPatientID(result.getInt("patient_id"));
+            pat.setName(result.getString("name"));
+            pat.setAddress(result.getString("address"));
+            pat.setCreated_date(result.getDate("created_date"));
+            pat.setUsername(result.getString("username"));
+            pat.setDob(result.getDate("dob"));
+            
+            int roomNum = result.getInt("room_num");
+            if (roomNum == 0) {
+                list.add(pat);
+            }
         }
         result.close();
         con.close();

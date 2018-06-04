@@ -6,6 +6,7 @@ import javax.faces.bean.ViewScoped;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedProperty;
 import java.sql.SQLException;
+import org.omnifaces.util.Faces;
 
 @ManagedBean(name="roomFilterView")
 @ViewScoped
@@ -23,18 +24,39 @@ public class RoomFilterView implements Serializable {
     }
     
     private List<Room> roomList;
+    private List<Room> freeRoomList;
     private List<Room> filteredRoom;
     
     @PostConstruct
     public void init() {
        try {
             roomList = room.getRoomList();
+            freeRoomList = room.getFreeRoomList();
        }
        catch (SQLException ex) {
            
        }
     }
+
+    public List<Room> getFreeRoomList() {
+        return freeRoomList;
+    }
+
+    public void setFreeRoomList(List<Room> freeRoomList) {
+        this.freeRoomList = freeRoomList;
+    }
     
+    public String admitTo(Room r) {
+        Reservation res = new Reservation();
+        res.setRoomId(r.getRoomNumber());
+        res.setPatientId(((Patient)Faces.getSessionAttribute("patient")).getPatientID());
+        try {
+            res.create();
+        }
+        catch (Exception ex) {       
+        }
+        return "/admitConfirmation.xhtml?faces-redirect=true";
+    }
 
     public List<Room> getRoomList() {
         return roomList;

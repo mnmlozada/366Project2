@@ -7,7 +7,7 @@
                 template="#{layoutMB.template}">
 
     
-    <ui:param name="title" value="Manage vPatients"/>
+    <ui:param name="title" value="Manage Patients"/>
 
     <ui:define name="body">
         <p:panel styleClass="card box-info" header="Patients">
@@ -25,6 +25,11 @@
                         <p:column filterBy="#{p.name}" sortBy="#{p.name}" headerText="Name"
                                   filterMatchMode="contains" priority="1">
                             <h:outputText value="#{p.name}"/>
+                        </p:column>
+                        
+                        <p:column filterBy="#{p.dob}" sortBy="#{p.dob}" headerText="Date of Birth"
+                                  filterMatchMode="contains" priority="1">
+                            <h:outputText value="#{p.dob}"/>
                         </p:column>
                         
                         <p:column filterBy="#{p.address}" sortBy="#{p.address}" headerText="Address"
@@ -49,13 +54,13 @@
                         
                         <p:column headerText="View Record">
                             <p:commandButton styleClass="btn btn-info btn-block"
-                                             value="View Record" action="#{patientFilterView.view(s)}"/>
+                                             value="View Record" action="#{patientFilterView.view(p)}"/>
                         </p:column>
                         
                         <p:column headerText="Delete Records">
                             <p:commandButton styleClass="btn btn-danger btn-block"
                                              value="Delete" update=":listForm" 
-                                             action="#{patientFilterView.delete(s)}"/>
+                                             action="#{patientFilterView.delete(p)}"/>
                         </p:column>
 
                         

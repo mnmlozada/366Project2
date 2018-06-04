@@ -44,13 +44,7 @@ public class Reservation implements Serializable {
     private final DBConnect dbConnect = new DBConnect();
     private Integer reservationId;
     private Integer roomId;
-    private Integer customerId;
-    
-    private Date startDate;
-    private UIInput startDateUI;
-    
-    private Date endDate;
-    private UIInput endDateUI;
+    private Integer patientId;
     
     /*
      * Total is stored to account for possible changes in room rate when a
@@ -60,10 +54,6 @@ public class Reservation implements Serializable {
     
     private Date checkedIn;
     private Date checkedOut;
-    
-    private String bedType;
-    private String viewType;
-    private UIInput viewTypeUI;
 
     public Integer getReservationId() {
         return reservationId;
@@ -81,44 +71,12 @@ public class Reservation implements Serializable {
         this.roomId = roomId;
     }
 
-    public Integer getCustomerId() {
-        return customerId;
+    public Integer getPatientId() {
+        return patientId;
     }
 
-    public void setCustomerId(Integer customerId) {
-        this.customerId = customerId;
-    }
-    
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-   
-    public UIInput getStartDateUI() {
-        return startDateUI;
-    }
-
-    public void setStartDateUI(UIInput startDateUI) {
-        this.startDateUI = startDateUI;
-    }
-    
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
-     
-    public UIInput getEndDateUI() {
-        return endDateUI;
-    }
-
-    public void setEndDateUI(UIInput endDateUI) {
-        this.endDateUI = endDateUI;
+    public void setPatientId(Integer patientId) {
+        this.patientId = patientId;
     }
     
     public Double getTotal() {
@@ -144,93 +102,6 @@ public class Reservation implements Serializable {
     public void setCheckedOut(Date checkedOut) {
         this.checkedOut = checkedOut;
     }
-
-    public String getBedType() {
-        return bedType;
-    }
-
-    public void setBedType(String bedType) {
-        this.bedType = bedType;
-    }
-    
-    public String getViewType() {
-        return viewType;
-    }
-
-    public void setViewType(String viewType) {
-        this.viewType = viewType;
-    }
-
-    public UIInput getViewTypeUI() {
-        return viewTypeUI;
-    }
-
-    public void setViewTypeUI(UIInput viewTypeUI) {
-        this.viewTypeUI = viewTypeUI;
-    }
-
-    public void validateNewReservation(
-        FacesContext context,
-        UIComponent component,
-        Object value
-    ) throws ValidatorException, SQLException {
-        startDate = new Date(startDateUI.getLocalValue().toString());
-        endDate = new Date(endDateUI.getLocalValue().toString());
-        viewType = viewTypeUI.getLocalValue().toString();
-        bedType = value.toString();
-        
-         try {
-            Connection con = dbConnect.getConnection();
-            if (con == null) {
-                throw new SQLException("Can't get database connection");
-            }
-            con.setAutoCommit(false);
-            
-            if (endDate.getTime() <= startDate.getTime()) {
-                FacesMessage errorMessage = new FacesMessage(
-                    "No rooms available matching given criteria."
-                );
-                throw new ValidatorException(errorMessage);
-            }
-                        
-            PreparedStatement ps = con.prepareStatement(
-                "select * from rooms " +
-                    "room1 left outer join reservation res1 " +
-                    "on res1.room_num = room1.room_number " +
-                "where window_type like ? and bed like ? and " +
-                    "(" +
-                        "select count(*) from reservation res2 " +
-                        "where res2.room_num = res1.room_num and " +
-                        "start_date < ?::date and end_date > ?::date" +
-                    ") = 0"
-            );
-
-            ps.setString(1, viewType);
-            ps.setString(2, bedType);
-            ps.setDate(3, new java.sql.Date(endDate.getTime()));
-            ps.setDate(4, new java.sql.Date(startDate.getTime()));
-
-            ResultSet result = ps.executeQuery();
-            if (result.next()) {
-                roomId = result.getInt("room_number");
-                if (logins.getType() == Login.CUSTOMER) {
-                    customerId = logins.getUserId();
-                }
-            }
-            else {
-                FacesMessage errorMessage = new FacesMessage(
-                    "No rooms available matching given criteria."
-                );
-                throw new ValidatorException(errorMessage);
-            }
-            result.close();
-            con.commit();
-            ps.close();
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
     
     public String create() throws SQLException, ParseException {
         try {
@@ -240,42 +111,14 @@ public class Reservation implements Serializable {
             }
             con.setAutoCommit(false);
             
-            Date temp = new java.sql.Date(startDate.getTime());
-
-            Double rate;
             PreparedStatement ps;
-            total = 0.0;
-            
-            while (temp.getTime() < endDate.getTime()) {
-                rate = DEFAULT_RATE;
-                ps = con.prepareStatement(
-                    "select * from rate " +
-                    "where room_num = " + roomId + " and " +
-                        "date = '" + temp.toString() + "'::date"
-                );
-
-                ResultSet result = ps.executeQuery();
-                while (result.next()) {
-                    rate = result.getDouble("rate");
-                }
-                total += rate;
-                temp.setTime(temp.getTime() + ONE_DAY_MILLISECONDS);
-                ps.close();
-                System.out.println(temp.getTime());
-                System.out.println(endDate.getTime());
-            }
-            
             ps = con.prepareStatement(
-                "Insert into reservation (room_num, customer_id, start_date," +
-                    " end_date, total) values(?,?,?,?,?)"
+                "Insert into reservation (room_num, patient_id, checked_in) values(?,?,current_date)"
             );
             
             //ps.setInt(1, reservationId);
             ps.setInt(1, roomId);
-            ps.setInt(2, customerId);
-            ps.setDate(3, new java.sql.Date(startDate.getTime()));
-            ps.setDate(4, new java.sql.Date(endDate.getTime()));
-            ps.setDouble(5, total);
+            ps.setInt(2, patientId);
             ps.executeUpdate();
             con.commit();
             ps.close();
@@ -324,15 +167,15 @@ public class Reservation implements Serializable {
             );
 
             ResultSet result = ps.executeQuery();
-            customerId = -1;
+            patientId = -1;
             if (result.next()) {
-                customerId = result.getInt("customer_id");
+                patientId = result.getInt("patient_id");
             }
             
             ps.close();
             con.close();
 
-            if (logins.getUserId() != customerId) {
+            if (logins.getUserId() != patientId) {
                 FacesMessage errorMessage = new FacesMessage(
                     "Reservation does not exist or is not your own reservation."
                 );
@@ -341,7 +184,7 @@ public class Reservation implements Serializable {
         }
     } 
     
-    public Reservation getNextToCheckIn(String customerName) throws SQLException {
+    public Reservation getByName(String patientName) throws SQLException {
         Connection con = dbConnect.getConnection();
         if (con == null) {
             throw new SQLException("Can't get database connection");
@@ -350,47 +193,11 @@ public class Reservation implements Serializable {
         PreparedStatement ps = con.prepareStatement(
             "select * " +
             "from reservation " +
-            "where customer_id = " +
+            "where patient_id = " +
             "(" +
-                "select customer_id " +
-                "from customer " +
-                "where name = '" + customerName + "'" +
-            ") and checked_in is null " +
-            "order by start_date " +
-            "limit 1"
-        );
-
-        ResultSet result = ps.executeQuery();
-        if (result.next()) {
-            reservationId = result.getInt("reservation_id");
-            roomId = result.getInt("room_num");
-            customerId = result.getInt("customer_id");
-            startDate = result.getDate("start_date");
-            endDate = result.getDate("end_date");
-            total = result.getDouble("total");
-            checkedIn = result.getDate("checked_in");
-            checkedOut = result.getDate("checked_out");
-        }
-        else {
-            return null;
-        }
-        return this;
-    }
-    
-    public Reservation getByName(String customerName) throws SQLException {
-        Connection con = dbConnect.getConnection();
-        if (con == null) {
-            throw new SQLException("Can't get database connection");
-        }
-
-        PreparedStatement ps = con.prepareStatement(
-            "select * " +
-            "from reservation " +
-            "where customer_id = " +
-            "(" +
-                "select customer_id " +
-                "from customer " +
-                "where name = '" + customerName + "'" +
+                "select patient_id " +
+                "from patient " +
+                "where name = '" + patientName + "'" +
             ") and checked_in is not null and checked_out is null " +
             "order by start_date " +
             "limit 1"
@@ -401,9 +208,7 @@ public class Reservation implements Serializable {
             Reservation r = new Reservation();
             r.reservationId = result.getInt("reservation_id");
             r.roomId = result.getInt("room_num");
-            r.customerId = result.getInt("customer_id");
-            r.startDate = result.getDate("start_date");
-            r.endDate = result.getDate("end_date");
+            r.patientId = result.getInt("patient_id");
             r.total = result.getDouble("total");
             r.checkedIn = result.getDate("checked_in");
             r.checkedOut = result.getDate("checked_out");
@@ -423,7 +228,7 @@ public class Reservation implements Serializable {
 
         PreparedStatement ps = con.prepareStatement(
             "select * from reservation " +
-            "where customer_id = " + logins.getUserId() + " order by start_date"
+            "where patient_id = " + logins.getUserId() + " order by start_date"
         );
 
         //get employee data from database
@@ -435,9 +240,7 @@ public class Reservation implements Serializable {
 
             r.setReservationId(result.getInt("reservation_id"));
             r.setRoomId(result.getInt("room_num"));
-            r.setCustomerId(result.getInt("customer_id"));
-            r.setStartDate(result.getDate("start_date"));
-            r.setEndDate(result.getDate("end_date"));
+            r.setPatientId(result.getInt("patient_id"));
             r.setTotal(result.getDouble("total"));
             r.setCheckedIn(result.getDate("checked_in"));
             r.setCheckedOut(result.getDate("checked_out"));
@@ -452,7 +255,7 @@ public class Reservation implements Serializable {
     }
 
     public String goToCheckIn() {
-        return "checkInCustomer";
+        return "checkInPatient";
     }
 
     public boolean isCheckedIn(Integer rID) throws SQLException {
@@ -500,7 +303,7 @@ public class Reservation implements Serializable {
     }
 
     public String goToCheckOut() {
-        return "checkOutCustomer";
+        return "checkOutPatient";
     }
     
     public Double checkOut(Integer rID, Date checkOutDate) throws SQLException {
@@ -542,9 +345,7 @@ public class Reservation implements Serializable {
 
             r.setReservationId(result.getInt("reservation_id"));
             r.setRoomId(result.getInt("room_num"));
-            r.setCustomerId(result.getInt("customer_id"));
-            r.setStartDate(result.getDate("start_date"));
-            r.setEndDate(result.getDate("end_date"));
+            r.setPatientId(result.getInt("patient_id"));
             r.setTotal(result.getDouble("total"));
             r.setCheckedIn(result.getDate("checked_in"));
             r.setCheckedOut(result.getDate("checked_out"));
@@ -580,9 +381,7 @@ public class Reservation implements Serializable {
         if (result.next()) {
             reservationId = result.getInt("reservation_id");
             roomId = result.getInt("room_num");
-            customerId = result.getInt("customer_id");
-            startDate = result.getDate("start_date");
-            endDate = result.getDate("end_date");
+            patientId = result.getInt("patient_id");
             total = result.getDouble("total");
             checkedIn = result.getDate("checked_in");
             checkedOut = result.getDate("checked_out");

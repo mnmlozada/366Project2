@@ -38,6 +38,12 @@
             <value>#{logins}</value>
         </managed-property>
     </managed-bean>
+    
+    <managed-bean id="patient">
+        <managed-bean-name>health_info</managed-bean-name>
+        <managed-bean-class>HealthInfo</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
     <managed-bean id="logins">
         <managed-bean-name>logins</managed-bean-name>
         <managed-bean-class>Login</managed-bean-class>
@@ -68,6 +74,15 @@
         <managed-property>
             <property-name>room</property-name>
             <value>#{room}</value>
+        </managed-property>
+    </managed-bean> 
+    <managed-bean id="patv">
+        <managed-bean-name>patientFilterView</managed-bean-name>
+        <managed-bean-class>PatientFilterView</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+        <managed-property>
+            <property-name>patient</property-name>
+            <value>#{patient}</value>
         </managed-property>
     </managed-bean>  
     <managed-bean id="reservation">

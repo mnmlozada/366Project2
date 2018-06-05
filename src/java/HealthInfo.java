@@ -114,4 +114,39 @@ public class HealthInfo implements Serializable{
     public void setInsurance(String insurance){
         this.insurance = insurance;
     }
+    
+    public List<HealthInfo> getHistoryForPatient(int patientId) throws SQLException {
+        Connection con = dbConnect.getConnection();
+        if (con == null) {
+            throw new SQLException("Can't get database connection");
+        }
+        PreparedStatement ps
+                = con.prepareStatement(
+                        "select * from healthInfo where patient_id = " + patientId + " order by hi_id desc");
+
+        //get patient data from database
+        ResultSet result = ps.executeQuery();
+        List<HealthInfo> list = new ArrayList<>();
+
+        while (result.next()) {
+            HealthInfo hi = new HealthInfo();
+
+            hi.setHi_id(result.getInt("hi_id"));
+            hi.setPatient_id(result.getInt("patient_id"));
+            hi.setExam_date(result.getDate("exam_date"));
+            hi.setGender(result.getString("gender"));
+            hi.setHeight(result.getInt("height_inch"));
+            hi.setWeight(result.getInt("weight"));
+            hi.setAllergies(result.getString("allergies"));
+            hi.setConditions(result.getString("conditions"));
+            hi.setMedicine(result.getString("medicine"));
+            hi.setInsurance(result.getString("insurance"));
+            
+            //store all data into a List
+            list.add(hi);
+        }
+        result.close();
+        con.close();
+        return list;
+    }
 }

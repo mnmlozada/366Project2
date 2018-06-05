@@ -1,15 +1,102 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
-                template="#{layoutMB.template}"> 
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="#{layoutMB.template}">
+
     
-    <ui:param name="title" value="Patient Home"/>
+    <ui:param name="title" value="My Profile"/>
 
     <ui:define name="body">
-        <p:panel styleClass="card no-border" style="min-height: 500px">
-            Welcome to Patient Home!
+        <p:panel styleClass="card box-info" header="Basic Info">
+            <p:panelGrid columns="1" columnClasses="ui-grid-col-6"
+                             layout="grid">
+                <table class="table table-bordered text-center">
+                       <tbody>
+                           <tr>
+                               <th>Name</th>
+                               <td>#{patient.name}</td>
+                           </tr>
+                           <tr>
+                               <th>Address</th>
+                               <td>#{patient.address}</td>
+                           </tr>
+                           <tr>
+                               <th>Date of Birth</th>
+                               <td>#{patient.dob}</td>
+                           </tr>
+                           <tr>
+                               <th>Account Creation Date</th>
+                               <td>#{patient.created_date}</td>
+                           </tr>
+                           <tr>
+                               <th>Username</th>
+                               <td>#{patient.username}</td>
+                           </tr>
+                       </tbody>
+                </table>
+            </p:panelGrid>
         </p:panel>
-    </ui:define>
+        <hr/>
+        <p:panel styleClass="card box-info" header="Health History">
+            <h:form prependId="false" id="listForms3">
+                        <div id="datatable">
+                            <p:dataTable var="h" id="list3" value="#{health_info.getHistoryForPatient(patient.patientID)}" styleClass="header-right">
+                                      
+                                <p:column headerText="Date">
+                                    <h:outputText value="#{h.exam_date}"/>
+                                </p:column>
+                                <p:column headerText="Gender">
+                                    <h:outputText value="#{h.gender}"/>
+                                </p:column>
+                                <p:column headerText="Height (in)">
+                                    <h:outputText value="#{h.height}"/>
+                                </p:column>
+                                <p:column headerText="Weight (lbs)">
+                                    <h:outputText value="#{h.weight}"/>
+                                </p:column>
+                                <p:column headerText="Allergies">
+                                    <h:outputText value="#{h.allergies}"/>
+                                </p:column>
+                                <p:column headerText="Conditions">
+                                    <h:outputText value="#{h.conditions}"/>
+                                </p:column>
+                                <p:column headerText="Medicine">
+                                    <h:outputText value="#{h.medicine}"/>
+                                </p:column>
+                                <p:column headerText="Insurance">
+                                    <h:outputText value="#{h.insurance}"/>
+                                </p:column>
 
+                            </p:dataTable>
+                        </div>
+                     </h:form>
+        </p:panel>
+        <hr/>
+        <p:panel styleClass="card box-info" header="Stay History">
+            <h:form prependId="false" id="listForms2">
+                        <div id="datatable">
+                            <p:dataTable var="r" id="list2" value="#{reservation.getAllByPatientID(patient.patientID)}" styleClass="header-right">
+                                      
+                                <p:column headerText="Admitted">
+                                    <h:outputText value="#{r.checkedIn}"/>
+                                </p:column>
+                                <p:column headerText="Released">
+                                    <h:outputText value="#{r.checkedOut}"/>
+                                </p:column>
+                                <p:column headerText="Room">
+                                    <h:outputText value="#{r.roomId}"/>
+                                </p:column>
+                                <p:column headerText="Details">
+                                     <p:commandButton styleClass="btn btn-info btn-block"
+                                                     value="View Details" action="#{r.viewMy()}"/>
+                                </p:column>
+
+                            </p:dataTable>
+                        </div>
+                     </h:form>
+        </p:panel>
+        </ui:define>
 </ui:composition>

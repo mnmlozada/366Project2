@@ -55,7 +55,7 @@ public class Patient implements Serializable {
     private String newPass1;
     private String newPass2;
     private UIInput newPass1UI;
-
+    
     public HealthInfo getHi() {
         return hi;
     }
@@ -315,6 +315,20 @@ public class Patient implements Serializable {
         return "/newHealthInfo.xhtml?faces-redirect=true";
     }
     
+    public String release() throws SQLException, ParseException {
+        Connection con = dbConnect.getConnection();
+        if (con == null) {
+            throw new SQLException("Can't get database connection");
+        }
+        con.setAutoCommit(false);
+
+        Reservation res = new Reservation().getByPatientID(patientID);
+        res.checkOut();
+        Faces.setSessionAttribute("reservation", res);
+        //Util.invalidateUserSession();
+        return "/releaseConfirmation.xhtml?faces-redirect=true";
+    }
+    
     public String updateInfo(HealthInfo hi) throws SQLException, ParseException {
         Connection con = dbConnect.getConnection();
         if (con == null) {
@@ -352,8 +366,6 @@ public class Patient implements Serializable {
             throw new SQLException("Can't get database connection");
         }
         con.setAutoCommit(false);
-
-        System.out.println(patientID);
         
         Statement statement = con.createStatement();
         statement.executeUpdate(
@@ -514,6 +526,42 @@ public class Patient implements Serializable {
             if (roomNum == 0) {
                 list.add(pat);
             }
+        }
+        result.close();
+        con.close();
+        return list;
+    }
+    
+    public List<Patient> getInPatientList() throws SQLException {
+        Connection con = dbConnect.getConnection();
+        if (con == null) {
+            throw new SQLException("Can't get database connection");
+        }
+        
+        PreparedStatement ps
+                = con.prepareStatement(
+                        "select * from patient join (select room_num, patient_id from reservation where checked_out is null) "
+                                + "as X on X.patient_id = patient.patient_id order by room_num desc, patient.name");
+
+        //get patient data from database
+        ResultSet result = ps.executeQuery();
+        List<Patient> list = new ArrayList<>();
+
+        while (result.next()) {
+            Patient pat = new Patient();
+
+            pat.setPatientID(result.getInt("patient_id"));
+            pat.setName(result.getString("name"));
+            pat.setAddress(result.getString("address"));
+            pat.setCreated_date(result.getDate("created_date"));
+            pat.setUsername(result.getString("username"));
+            pat.setDob(result.getDate("dob"));
+            
+            int roomNum = result.getInt("room_num");
+            Room r = new Room();
+            r.setRoomNumber(roomNum);
+            pat.setRoom(r.getRoom());
+            list.add(pat);
         }
         result.close();
         con.close();

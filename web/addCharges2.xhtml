@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:adm="http://github.com/adminfaces"
+                template="#{layoutMB.template}">
+    
+    <ui:param name="title" value="Complete Adding Patient Charges"/>
+
+    <ui:define name="body">
+        <p:panel styleClass="card box-info" >
+            <h:form>
+                <p:panelGrid columns="3" columnClasses="ui-grid-col-2,ui-grid-col-2, ui-grid-col-4"
+                             layout="grid">      
+                    <p:outputLabel for="type" value="Charge Type"/>
+                    <p:selectOneMenu id="type" value="#{transaction.charge_type}" required="true">
+                            <f:selectItem itemLabel="Select"/>
+                            <f:selectItem itemLabel="Equipment" itemValue="equipment"/>
+                            <f:selectItem itemLabel="Food" itemValue="food"/>
+                            <f:selectItem itemLabel="Lab Work" itemValue="lab work"/>
+                            <f:selectItem itemLabel="Staff Fees" itemValue="staff fees"/>
+                    </p:selectOneMenu>
+                    <p:message id="msg5" for="type"/>
+                    
+                    <p:outputLabel for="desc" value="Charge Description"/>
+                    <p:inputText value="#{transaction.charge_description}" required ="true"
+                    requiredMessage="Your must enter description"
+                    id="desc"/>
+                    <p:message id="msg1" for="desc"/>
+                    
+                    <p:outputLabel for="price" value="Charge Amount"/>
+                    <p:inputText value="#{transaction.total}" required ="true"
+                    requiredMessage="You must enter a charge amount"
+                    id="price" validatorMessage="Amount must be a decimal and positive."
+                    converterMessage="The price must be entered as $XX.XX.">
+                        <f:convertNumber currencySymbol="$" type="currency" />
+                    </p:inputText>
+                    <p:message id="msg2" for="price"/>
+
+                    <p:commandButton value="Add Charge" action="#{transaction.addCharge}" update="@form" id="cmdBtn" styleClass="btn-primary"/>
+                 </p:panelGrid>
+            </h:form>
+        </p:panel>
+    </ui:define>
+
+</ui:composition>
+
+

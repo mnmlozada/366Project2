@@ -19,16 +19,24 @@ import java.util.TimeZone;
 import javax.el.ELContext;
 import javax.faces.bean.ManagedProperty;
 
-@Named(value = "medication")
+@javax.faces.bean.ManagedBean(name="medication")
 @SessionScoped
-@ManagedBean
-public class Medication {
+public class Medication implements Serializable{
     
     private DBConnect dbConnect = new DBConnect();
     private Integer drug_id;
     private String name;
-    private Integer price;
+    private Double price;
     private Integer duration;
+
+    public Integer getDrug_id() {
+        return drug_id;
+    }
+
+    public void setDrug_id(Integer drug_id) {
+        this.drug_id = drug_id;
+    }
+    
     
     public Integer getDrugID(){
         return drug_id;
@@ -46,8 +54,12 @@ public class Medication {
         this.name = name;
     }
     
-    public Integer getPrice(){
+    public Double getPrice(){
         return price;
+    }
+    
+     public void setPrice(Double price){
+        this.price = price;
     }
     
     public Integer getDuration(){
@@ -75,7 +87,7 @@ public class Medication {
 
         drug_id = result.getInt("drug_id");
         name = result.getString("name");
-        price = result.getInt("price");
+        price = result.getDouble("price");
         duration = result.getInt("duration");
         return this;
     }

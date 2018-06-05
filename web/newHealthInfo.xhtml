@@ -21,7 +21,7 @@
                         <p:menuitem value="Confirmation"/>
                     </p:steps>
                 </p:panelGrid>
-                <p:panelGrid columns="3" columnClasses="ui-grid-col-2,ui-grid-col-2, ui-grid-col-4"
+                <p:panelGrid columns="3" columnClasses="ui-grid-col-3,ui-grid-col-3, ui-grid-col-4"
                              layout="grid">
                     
                     <p:outputLabel for="gender" value="Gender"/>
@@ -46,19 +46,19 @@
                     <p:message id="msg14" for="health_infoWeight"/>
                     
                     <p:outputLabel for="health_infoAllergies" value="Known Allergies"/>
-                    <p:inputText value="#{health_info.allergies}" required ="true"
+                    <p:inputTextarea value="#{health_info.allergies}" required ="true"
                     requiredMessage="Your must enter patient allergies or 'none'"
                     id="health_infoAllergies"/>
                     <p:message id="msg13" for="health_infoAllergies"/>
                     
                     <p:outputLabel for="health_infoConditions" value="Conditions &amp; Symptoms"/>
-                    <p:inputText value="#{health_info.conditions}" required ="true"
+                    <p:inputTextarea value="#{health_info.conditions}" required ="true"
                     requiredMessage="Your must enter patient conditions"
                     id="health_infoConditions"/>
                     <p:message id="msg12" for="health_infoConditions"/>
                     
                     <p:outputLabel for="health_infoMedicine" value="Current Medications"/>
-                    <p:inputText value="#{health_info.medicine}" required ="true"
+                    <p:inputTextarea value="#{health_info.medicine}" required ="true"
                     requiredMessage="Your must enter patient medications or 'none'"
                     id="health_infoMedicine"/>
                     <p:message id="msg11" for="health_infoMedicine"/>

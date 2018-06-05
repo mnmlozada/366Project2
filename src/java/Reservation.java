@@ -21,9 +21,9 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
+import org.omnifaces.util.Faces;
 
-@ManagedBean
-@Named(value = "reservation")
+@javax.faces.bean.ManagedBean(name="reservation")
 @SessionScoped
 public class Reservation implements Serializable {
     
@@ -37,7 +37,7 @@ public class Reservation implements Serializable {
         return logins;
     }
 
-    public void setLogin(Login logins) {
+    public void setLogins(Login logins) {
         this.logins = logins;
     }
     
@@ -46,10 +46,6 @@ public class Reservation implements Serializable {
     private Integer roomId;
     private Integer patientId;
     
-    /*
-     * Total is stored to account for possible changes in room rate when a
-     * reservation is already made.
-     */
     private Double total;
     
     private Date checkedIn;
@@ -101,6 +97,27 @@ public class Reservation implements Serializable {
 
     public void setCheckedOut(Date checkedOut) {
         this.checkedOut = checkedOut;
+    }
+    
+    public String view() {
+        Faces.setSessionAttribute("reservation", this);
+        return "/viewReservation.xhtml?faces-redirect=true";
+    }
+    
+    public String viewMy() {
+        Faces.setSessionAttribute("reservation", this);
+        return "/viewMyReservation.xhtml?faces-redirect=true";
+    }
+    
+    public String viewPatient() throws SQLException {
+        Faces.setSessionAttribute("patient", (new Patient()).getByID(patientId));
+        return "/viewPatient.xhtml?faces-redirect=true";
+    }
+    
+    public String getPatientName() throws SQLException {
+        Patient p = new Patient();
+        p.getByID(patientId);
+        return p.getName();
     }
     
     public String create() throws SQLException, ParseException {
@@ -219,6 +236,65 @@ public class Reservation implements Serializable {
             return null;
         }
     }
+    
+    public Reservation getByPatientID(int patientID) throws SQLException {
+        Connection con = dbConnect.getConnection();
+        if (con == null) {
+            throw new SQLException("Can't get database connection");
+        }
+
+        PreparedStatement ps = con.prepareStatement(
+            "select * from reservation " +
+            "where patient_id = " + patientID + " and checked_out is null" +
+            " and checked_in is not null " +
+            "limit 1"
+        );
+
+        ResultSet result = ps.executeQuery();
+        if (result.next()) {
+            Reservation r = new Reservation();
+            r.reservationId = result.getInt("reservation_id");
+            r.roomId = result.getInt("room_num");
+            r.patientId = result.getInt("patient_id");
+            r.total = result.getDouble("total");
+            r.checkedIn = result.getDate("checked_in");
+            r.checkedOut = result.getDate("checked_out");
+            
+            return r;
+        }
+        else {
+            return null;
+        }
+    }
+    
+    public Reservation getAllByPatientID(int patientID) throws SQLException {
+        Connection con = dbConnect.getConnection();
+        if (con == null) {
+            throw new SQLException("Can't get database connection");
+        }
+
+        PreparedStatement ps = con.prepareStatement(
+            "select * from reservation " +
+            "where patient_id = " + patientID +
+            " order by checked_in"
+        );
+
+        ResultSet result = ps.executeQuery();
+        if (result.next()) {
+            Reservation r = new Reservation();
+            r.reservationId = result.getInt("reservation_id");
+            r.roomId = result.getInt("room_num");
+            r.patientId = result.getInt("patient_id");
+            r.total = result.getDouble("total");
+            r.checkedIn = result.getDate("checked_in");
+            r.checkedOut = result.getDate("checked_out");
+            
+            return r;
+        }
+        else {
+            return null;
+        }
+    }
         
     public List<Reservation> getMyReservationList() throws SQLException {
         Connection con = dbConnect.getConnection();
@@ -306,18 +382,47 @@ public class Reservation implements Serializable {
         return "checkOutPatient";
     }
     
-    public Double checkOut(Integer rID, Date checkOutDate) throws SQLException {
+    public Double checkOut() throws SQLException, ParseException {
         Connection con = dbConnect.getConnection();
         if (con == null) {
             throw new SQLException("Can't get database connection");
         }
+        
+        int nights = (int)( ((new Date()).getTime() - checkedIn.getTime()) / (1000 * 60 * 60 * 24));
+        
+        Room room = new Room();
+        room.setRoomNumber(roomId);
+        room = room.getRoom();
+        
+        Transaction roomT = new Transaction();
+        roomT.setPatient_id(patientId);
+        roomT.setReservation_id(reservationId);
+        roomT.setTran_date(new Date());
+        roomT.setCharge_type("room");
+        roomT.setCharge_description(nights + " night(s) in " + room.getDepartment() + " department room " + roomId);
+        roomT.setTotal(nights * room.getPrice());
+        roomT.insert();
 
         PreparedStatement ps = con.prepareStatement(
-            "update reservation " +
-            "set checked_out = ? " +
-            "where reservation_id = " + rID
+            "select * from transactions where reservation_id = " + reservationId + " order by transaction_id"
         );
-        ps.setDate(1, new java.sql.Date(checkOutDate.getTime()));
+
+        //get employee data from database
+        ResultSet result = ps.executeQuery();
+        
+        total = 0.0;
+
+        while (result.next()) {;
+            total += result.getDouble("total");
+        }
+        
+        result.close();
+
+        ps = con.prepareStatement(
+            "update reservation " +
+            "set checked_out = current_date, total =  " + total +
+            "where reservation_id = " + reservationId
+        );
         ps.executeUpdate();
         
         con.close();

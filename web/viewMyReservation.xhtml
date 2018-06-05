@@ -6,24 +6,15 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 template="#{layoutMB.template}">
 
+    
     <ui:param name="title" value="Stay Details"/>
 
     <ui:define name="body">
         <p:panel styleClass="card box-info" header="Basic Info">
             <p:panelGrid columns="1" columnClasses="ui-grid-col-6"
                              layout="grid">
-                <h:form>
                 <table class="table table-bordered text-center">
                        <tbody>
-                           <tr>
-                               <th>Patient Name</th>
-                               <td>#{reservation.getPatientName()}</td>
-                           </tr>
-                           <tr>
-                               <th>Patient Profile</th>
-                               <td><p:commandButton styleClass="btn btn-info btn-block"
-                                                    value="View Profile" action="#{reservation.viewPatient()}"/></td>
-                           </tr>
                            <tr>
                                <th>Admitted Date</th>
                                <td>#{reservation.checkedIn}</td>
@@ -42,7 +33,6 @@
                            </tr>
                        </tbody>
                 </table>
-                </h:form>
             </p:panelGrid>
         </p:panel>
         <hr/>

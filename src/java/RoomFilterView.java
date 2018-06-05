@@ -50,6 +50,7 @@ public class RoomFilterView implements Serializable {
         Reservation res = new Reservation();
         res.setRoomId(r.getRoomNumber());
         res.setPatientId(((Patient)Faces.getSessionAttribute("patient")).getPatientID());
+        Faces.setSessionAttribute("reservation", res);
         try {
             res.create();
         }

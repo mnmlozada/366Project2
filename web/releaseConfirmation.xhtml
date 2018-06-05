@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="#{layoutMB.template}">
+    
+    <ui:param name="title" value="Patient Release Confirmation"/>
+
+    <ui:define name="body">
+        <p:panel styleClass="card no-border" style="min-height: 70px">
+            Patient <b>#{patient.name}</b> has been released! The total bill was <b>$#{reservation.total}</b>. The charge breakdown can be found below.
+        </p:panel>
+        <hr/>
+        <p:panel styleClass="card box-info" header="Cost Breakdown">
+            <div id="datatable2">
+                <p:dataTable var="t" id="list3" value="#{transaction.getResTransactionList(reservation.reservationId)}" styleClass="header-right">
+
+                    <p:column headerText="Date">
+                        <h:outputText value="#{t.tran_date}"/>
+                    </p:column>
+                    <p:column headerText="Charge Type">
+                        <h:outputText value="#{t.charge_type}"/>
+                    </p:column>
+                    <p:column headerText="Description">
+                        <h:outputText value="#{t.charge_description}"/>
+                    </p:column>
+                    <p:column headerText="Amount">
+                        <h:outputText value="$#{t.total}"/>
+                    </p:column>
+
+                </p:dataTable>
+            </div>
+        </p:panel>
+    </ui:define>
+
+</ui:composition>
+

@@ -14,6 +14,7 @@ import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import javax.inject.Named;
+import org.omnifaces.util.Faces;
 
 @Named(value = "login")
 @SessionScoped
@@ -97,12 +98,13 @@ public class Login implements Serializable {
 
         Statement statement = con.createStatement();
 
-        PreparedStatement preparedStatement = con.prepareStatement("SELECT * FROM customer WHERE username = ? AND password = ?");
+        PreparedStatement preparedStatement = con.prepareStatement("SELECT * FROM patient WHERE username = ? AND password = ?");
         preparedStatement.setString(1, login);
         preparedStatement.setString(2, password);
         ResultSet rs = preparedStatement.executeQuery();
         while (rs.next()) {
             userId = rs.getInt("patient_id");
+            Faces.setSessionAttribute("patient", (new Patient()).getByID(userId));
             result = CUSTOMER;
         }
         statement.close();

@@ -108,6 +108,10 @@
         <managed-bean-name>transaction</managed-bean-name>
         <managed-bean-class>Transaction</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
+        <managed-property>
+            <property-name>logins</property-name>
+            <value>#{logins}</value>
+        </managed-property>
     </managed-bean>
     <managed-bean id="prescription">
         <managed-bean-name>prescription</managed-bean-name>

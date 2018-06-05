@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
-                template="#{layoutMB.template}"> 
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="#{layoutMB.template}">
     
     <ui:param name="title" value="Patient Admittance Confirmation"/>
 
     <ui:define name="body">
         <p:panel styleClass="card no-border" style="min-height: 500px">
-            Patient successfully admitted!
+            <h:form>
+                    <p:steps activeIndex="3">
+                        <p:menuitem value="Patient Info"/>
+                        <p:menuitem value="Health Info"/>
+                        <p:menuitem value="Room Selection"/>
+                        <p:menuitem value="Confirmation"/>
+                    </p:steps>
+            </h:form>
+            <br/><br/>
+            Patient <b>#{patient.name}</b> has been admitted to room <b>#{reservation.roomId}</b>. Please take the patient to their assigned room.
         </p:panel>
     </ui:define>
 

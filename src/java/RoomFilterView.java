@@ -56,6 +56,8 @@ public class RoomFilterView implements Serializable {
         }
         catch (Exception ex) {       
         }
+        Faces.setSessionAttribute("patient", new Patient());
+        Faces.setSessionAttribute("health_info", new HealthInfo());
         return "/admitConfirmation.xhtml?faces-redirect=true";
     }
 

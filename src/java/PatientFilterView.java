@@ -79,6 +79,7 @@ public class PatientFilterView implements Serializable {
        catch (Exception ex) {
            System.out.println(ex);
        }
+       Faces.setSessionAttribute("patient", new Patient());
        return "/releaseConfirmation.xhtml?faces-redirect=true";
     }
     

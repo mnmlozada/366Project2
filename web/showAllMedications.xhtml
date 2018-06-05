@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://java.sun.com/jsf/core"
+    template="#{layoutMB.template}"
+>   
+    <ui:param name="title" value="Manage Medications"/>
+    <ui:define name="body">
+        <p:panel styleClass="card box-info" header="Medications">
+            <h:form prependId="false" id="listForm">
+                <div id="datatable">
+                    <p:dataTable 
+                        var="m"
+                        id="list"
+                        value="#{medicationFilterView.medicationList}"
+                        widgetVar="medicationTable"
+                        paginator="true"
+                        styleClass="header-right"
+                        paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                        rowsPerPageTemplate="15,25,50"
+                        rows="15"
+                        rowKey="#{m.drugID}"
+                        emptyMessage="No medication found with given criteria"
+                        stickyHeader="true"
+                        selectionMode="single"
+                        filteredValue="#{medicationFilterView.filteredMedication}"
+                    >
+                        <p:column
+                            filterBy="#{m.drugID}"
+                            sortBy="#{m.drugID}"
+                            headerText="Id"
+                            filterMatchMode="contains"
+                            priority="1"
+                        >
+                            <h:outputText value="#{m.drugID}"/>
+                        </p:column>
+
+                        <p:column
+                            filterBy="#{m.name}"
+                            sortBy="#{m.name}"
+                            headerText="Name"
+                            filterMatchMode="contains"
+                            priority="2"
+                        >
+                            <h:outputText value="#{m.name}"/>
+                        </p:column>
+                        
+                        <p:column
+                            filterBy="#{m.price}"
+                            sortBy="#{m.price}"
+                            headerText="Price"
+                            filterMatchMode="contains"
+                            priority="3"
+                        >
+                            <h:outputText value="#{m.price}"/>
+                        </p:column>
+                        
+                        <p:column
+                            filterBy="#{m.duration}"
+                            sortBy="#{m.duration}"
+                            headerText="Duration"
+                            filterMatchMode="contains"
+                            priority="4"
+                        >
+                            <h:outputText value="#{m.duration}"/>
+                        </p:column>
+                        
+                        <p:column headerText="Delete">
+                            <p:commandButton
+                                styleClass="btn btn-danger btn-block"
+                                value="Delete"
+                                update=":listForm" 
+                                action="#{medicationFilterView.delete(m)}"/>
+                        </p:column>
+                    </p:dataTable>
+                </div>
+             </h:form>
+        </p:panel>
+    </ui:define>
+</ui:composition>

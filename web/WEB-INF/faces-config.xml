@@ -3,16 +3,16 @@
     xmlns="http://xmlns.jcp.org/xml/ns/javaee"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd"
->
-    
+>    
     <application>
-		<resource-handler>org.omnifaces.resourcehandler.CombinedResourceHandler</resource-handler>
-	</application>
+        <resource-handler>
+            org.omnifaces.resourcehandler.CombinedResourceHandler
+        </resource-handler>
+    </application>
         
     <managed-bean id="selector_employee">
         <managed-bean-name>selector_employee</managed-bean-name>
         <managed-bean-class>SelectorEmployee</managed-bean-class>
-    
         <managed-bean-scope>session</managed-bean-scope></managed-bean>
     <managed-bean id="selector_admin">
         <managed-bean-name>selector_admin</managed-bean-name>
@@ -118,6 +118,20 @@
         <managed-bean-class>Prescription</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
+    <managed-bean id="medication">
+        <managed-bean-name>medication</managed-bean-name>
+        <managed-bean-class>Medication</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="medicationv">
+        <managed-bean-name>medicationFilterView</managed-bean-name>
+        <managed-bean-class>MedicationFilterView</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+        <managed-property>
+            <property-name>medication</property-name>
+            <value>#{medication}</value>
+        </managed-property>
+    </managed-bean>
     <managed-bean id="health_info">
         <managed-bean-name>health_info</managed-bean-name>
         <managed-bean-class>HealthInfo</managed-bean-class>
@@ -175,7 +189,6 @@
             <to-view-id>/index.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
-    
     
     <navigation-rule id="logoutA">
         <from-view-id>
@@ -276,9 +289,8 @@
         <from-view-id>/addCharges.xhtml</from-view-id>
         <to-view-id>/startEmployee.xhtml</to-view-id>
     </navigation-rule>
-    
      
-     <navigation-rule id="change_prices">
+    <navigation-rule id="change_prices">
         <from-view-id>
             /changePricesAll.xhtml
         </from-view-id>
@@ -286,7 +298,7 @@
             <from-outcome>main</from-outcome>
             <to-view-id>/startAdmin.xhtml</to-view-id>
         </navigation-case>
-     </navigation-rule>
+    </navigation-rule>
     
     <navigation-rule id="new_customer">
         <from-view-id>

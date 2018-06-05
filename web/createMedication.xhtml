@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:adm="http://github.com/adminfaces"
+    template="#{layoutMB.template}"
+>    
+    <ui:param name="title" value="Add Medication"/>
+    <ui:define name="body">
+        <p:panel styleClass="card box-info" >
+            <h:form>
+                <p:panelGrid 
+                    columns="3"
+                    columnClasses="ui-grid-col-2,ui-grid-col-2, ui-grid-col-4"
+                    layout="grid"
+                >    
+                    <p:outputLabel for="medicationName" value="Name"/>
+                    <p:inputText
+                        value="#{medication.name}"
+                        required ="true"
+                        requiredMessage="You must enter a medication name"
+                        id="medicationName"
+                    />
+                    <p:message id="msg1" for="medicationName"/>
+                    
+                    <p:outputLabel for="price" value="Price"/>
+                    <p:inputText
+                        id="price"
+                        value="#{medication.price}"
+                        required="true"
+                        requiredMessage="You must enter a price"
+                    />
+                    <p:message id="msg5" for="price"/>
+      
+                    <p:outputLabel for="duration" value="Duration"/>
+                    <p:inputText
+                        value="#{medication.duration}"
+                        required ="true"
+                        requiredMessage="Your must enter a medication duration"
+                        id="duration"
+                    />
+                    <p:message id="msg2" for="duration"/>
+
+                    <p:commandButton
+                        value="Add Medication"
+                        action="#{medication.createMedication}"
+                        update="@form"
+                        id="cmdBtn"
+                        styleClass="btn-primary"
+                    />
+                 </p:panelGrid>
+            </h:form>
+        </p:panel>
+    </ui:define>
+</ui:composition>

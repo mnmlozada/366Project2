@@ -5,6 +5,7 @@ import javax.faces.bean.ViewScoped;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedProperty;
 import java.sql.SQLException;
+import org.omnifaces.util.Faces;
 
 @ManagedBean(name="medicationFilterView")
 @ViewScoped
@@ -54,5 +55,5 @@ public class MedicationFilterView implements Serializable {
 
     public void setFilteredMedication(List<Medication> filteredMedication) {
         this.filteredMedication = filteredMedication;
-    }
+    }    
 }

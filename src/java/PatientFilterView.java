@@ -70,7 +70,7 @@ public class PatientFilterView implements Serializable {
         Faces.setSessionAttribute("patient", p);
         return "/newHealthInfo.xhtml?faces-redirect=true";
     }
-    
+
     public String release(Patient p) {
         try {
             p.release();
@@ -115,5 +115,4 @@ public class PatientFilterView implements Serializable {
     public void setFilteredPatient(List<Patient> filteredPatient) {
         this.filteredPatient = filteredPatient;
     }
-
 }

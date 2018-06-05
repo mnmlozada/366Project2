@@ -300,7 +300,7 @@ public class Patient implements Serializable {
         ps.close();
         
         ps = con.prepareStatement(
-            "select * from patient where username = " + username
+            "select * from patient where username = '" + username + "'"
         );
 
         ResultSet result = ps.executeQuery();

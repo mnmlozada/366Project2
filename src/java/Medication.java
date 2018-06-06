@@ -1,13 +1,12 @@
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
-import javax.faces.bean.ManagedBean;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
@@ -15,9 +14,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import org.omnifaces.util.Faces;
 
-@ManagedBean(name="medication")
+@javax.faces.bean.ManagedBean(name="medication")
 @SessionScoped
-public class Medication implements Serializable{
+public class Medication implements Serializable {
     
     private DBConnect dbConnect = new DBConnect();
     private Integer drug_id;
@@ -66,7 +65,7 @@ public class Medication implements Serializable{
         
         PreparedStatement ps = con.prepareStatement(
             "Insert into medication (name, price, duration) " +
-            "values(?, ?, ?)"
+            "values(?, round(cast(? as numeric), 2), ?)"
         );
         ps.setString(1, name);
         ps.setDouble(2, price);

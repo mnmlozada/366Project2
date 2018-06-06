@@ -19,7 +19,16 @@
                 </p:steps>
             </h:form>
                 <br/><br/>
-                Patient <b>#{patient.name}</b> has been prescribed <b>#{medication.name}</b> by
+                <b>#{patient.name}</b> has been charged 
+                <b>
+                    <h:outputText value="#{transaction.total}">
+                        <f:convertNumber 
+                            type="currency" 
+                            currencySymbol="$"
+                        />
+                    </h:outputText>
+                </b> for a prescription of 
+                <b>#{medication.name}</b> by
                 <b>#{staff.name}</b>.
         </p:panel>
     </ui:define>

@@ -19,7 +19,14 @@
                         widgetVar="medicationTable"
                         paginator="true"
                         styleClass="header-right"
-                        paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                        paginatorTemplate="
+                            {CurrentPageReport} 
+                            {FirstPageLink} 
+                            {PreviousPageLink} 
+                            {PageLinks} 
+                            {NextPageLink} 
+                            {LastPageLink} 
+                            {RowsPerPageDropdown}"
                         rowsPerPageTemplate="15,25,50"
                         rows="15"
                         rowKey="#{m.drugID}"
@@ -55,7 +62,12 @@
                             filterMatchMode="contains"
                             priority="3"
                         >
-                            <h:outputText value="#{m.price}"/>
+                            <h:outputText value="#{m.price}">
+                                <f:convertNumber 
+                                    type="currency" 
+                                    currencySymbol="$"
+                                />
+                            </h:outputText>
                         </p:column>
                         
                         <p:column

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:adm="http://github.com/adminfaces"
+    template="#{layoutMB.template}"
+>
+    <ui:param name="title" value="Prescribe Medication to Patient"/>
+    <ui:define name="body">
+        <p:panel styleClass="card no-border" style="min-height: 500px">
+            <h:form>
+                <p:steps activeIndex="2">
+                    <p:menuitem value="Select Patient"/>
+                    <p:menuitem value="Select Medication"/>
+                    <p:menuitem value="Confirmation"/>
+                </p:steps>
+            </h:form>
+                <br/><br/>
+                <b>#{patient.name}</b> has been charged 
+                <b>
+                    <h:outputText value="#{transaction.total}">
+                        <f:convertNumber 
+                            type="currency" 
+                            currencySymbol="$"
+                        />
+                    </h:outputText>
+                </b> for a prescription of 
+                <b>#{medication.name}</b> by
+                <b>#{staff.name}</b>.
+        </p:panel>
+    </ui:define>
+</ui:composition>

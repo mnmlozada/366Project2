@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:adm="http://github.com/adminfaces"
+    template="#{layoutMB.template}"
+>    
+    <ui:param name="title" value="Prescribe Medication to Patient"/>
+    <ui:define name="body">
+        <h:form>
+            <p:steps activeIndex="0">
+                <p:menuitem value="Select Patient"/>
+                <p:menuitem value="Select Medication"/>
+                <p:menuitem value="Confirmation"/>
+            </p:steps>
+        </h:form>
+        <p:panel styleClass="card box-info" header="Current Patients">
+            <h:form prependId="false" id="patientListForms">
+                <div id="patientDatatable">
+                    <p:dataTable
+                        var="p"
+                        id="patientList"
+                        value="#{patientFilterView.inPatientList}"
+                        widgetVar="patientTable"
+                        paginator="true"
+                        styleClass="header-right"
+                        paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                        rowsPerPageTemplate="40, 80, 160"
+                        rows="40"
+                        rowKey="#{p.patientID}"
+                        emptyMessage="No patients found with given criteria"
+                        stickyHeader="false"
+                        selectionMode="single"
+                        filteredValue="#{patientFilterView.filteredPatient}"
+                    >                  
+                        <p:column
+                            filterBy="#{p.name}"
+                            sortBy="#{p.name}"
+                            headerText="Name"
+                            filterMatchMode="contains"
+                            priority="1"
+                        >
+                            <h:outputText value="#{p.name}"/>
+                        </p:column>
+
+                        <p:column
+                            filterBy="#{p.room.roomNumber}"
+                            sortBy="#{p.room.roomNumber}"
+                            headerText="Room Number"
+                            filterMatchMode="contains"
+                            priority="2"
+                        >
+                            <h:outputText value="#{p.room.roomNumber}"/>
+                        </p:column>
+                        
+                        <p:column headerText="Prescribe Patient">
+                            <p:commandButton
+                                styleClass="btn btn-info btn-block"
+                                value="Select Patient"
+                                action="#{prescriptionView.selectForPrescription(p)}"/>
+                        </p:column>
+                    </p:dataTable>
+                </div>
+            </h:form>
+        </p:panel>
+    </ui:define>
+</ui:composition>

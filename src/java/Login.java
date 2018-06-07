@@ -122,6 +122,7 @@ public class Login implements Serializable {
             preparedStatement.setString(1, login);
             preparedStatement.setString(2, password);
             rs = preparedStatement.executeQuery();
+            Staff s = new Staff();
             while (rs.next()) {
                 boolean adminFlag = rs.getBoolean("adminFlag");
                 userId = rs.getInt("staff_id");
@@ -130,6 +131,8 @@ public class Login implements Serializable {
                 } else {
                     result = EMPLOYEE;
                 }
+                s.setStaffID(userId);
+                Faces.setSessionAttribute("staff", s.getStaff());
             }
             statement.close();
             con.commit();

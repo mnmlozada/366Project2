@@ -1,12 +1,11 @@
 import java.io.Serializable;
-import javax.faces.bean.ManagedBean;
 import java.util.List;
-import javax.faces.bean.ViewScoped;
-import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedProperty;
 import java.sql.SQLException;
+import javax.annotation.PostConstruct;
+import javax.faces.bean.ViewScoped;
+import javax.faces.bean.ManagedProperty;
 
-@ManagedBean(name="medicationFilterView")
+@javax.faces.bean.ManagedBean(name="medicationFilterView")
 @ViewScoped
 public class MedicationFilterView implements Serializable {
 
@@ -54,5 +53,5 @@ public class MedicationFilterView implements Serializable {
 
     public void setFilteredMedication(List<Medication> filteredMedication) {
         this.filteredMedication = filteredMedication;
-    }
+    }    
 }

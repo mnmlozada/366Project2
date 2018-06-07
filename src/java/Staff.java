@@ -236,7 +236,7 @@ public class Staff implements Serializable {
 
         result.next();
         
-        staffID = result.getInt("staffID");
+        staffID = result.getInt("staff_id");
         name = result.getString("name");
         position = result.getString("position");
         return this;

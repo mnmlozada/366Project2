@@ -5,16 +5,24 @@
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:p="http://primefaces.org/ui"
     xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:adm="http://github.com/adminfaces"
     template="#{layoutMB.template}"
->   
-    <ui:param name="title" value="Manage Medications"/>
+>
+    <ui:param name="title" value="Prescribe Medication to Patient"/>
     <ui:define name="body">
+        <h:form>
+            <p:steps activeIndex="1">
+                <p:menuitem value="Select Patient"/>
+                <p:menuitem value="Select Medication"/>
+                <p:menuitem value="Confirmation"/>
+            </p:steps>
+        </h:form>
         <p:panel styleClass="card box-info" header="Medications">
-            <h:form prependId="false" id="listForm">
-                <div id="datatable">
+            <h:form prependId="false" id="medicationListForms">
+                <div id="medicationDatatable">
                     <p:dataTable 
                         var="m"
-                        id="list"
+                        id="medicationList"
                         value="#{medicationFilterView.medicationList}"
                         widgetVar="medicationTable"
                         paginator="true"
@@ -31,7 +39,7 @@
                         rows="15"
                         rowKey="#{m.drugID}"
                         emptyMessage="No medication found with given criteria"
-                        stickyHeader="true"
+                        stickyHeader="false"
                         selectionMode="single"
                         filteredValue="#{medicationFilterView.filteredMedication}"
                     >
@@ -80,16 +88,15 @@
                             <h:outputText value="#{m.duration}"/>
                         </p:column>
                         
-                        <p:column headerText="Delete">
+                        <p:column headerText="Prescribe Medication">
                             <p:commandButton
-                                styleClass="btn btn-danger btn-block"
-                                value="Delete"
-                                update=":listForm" 
-                                action="#{medicationFilterView.delete(m)}"/>
+                                styleClass="btn btn-info btn-block"
+                                value="Select Medication"
+                                action="#{prescriptionView.prescribe(m)}"/>
                         </p:column>
                     </p:dataTable>
                 </div>
-             </h:form>
+            </h:form>
         </p:panel>
     </ui:define>
 </ui:composition>

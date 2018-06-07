@@ -84,7 +84,7 @@
             <property-name>patient</property-name>
             <value>#{patient}</value>
         </managed-property>
-    </managed-bean>  
+    </managed-bean>
     <managed-bean id="reservation">
         <managed-bean-name>reservation</managed-bean-name>
         <managed-bean-class>Reservation</managed-bean-class>
@@ -117,6 +117,15 @@
         <managed-bean-name>prescription</managed-bean-name>
         <managed-bean-class>Prescription</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="prescriptionv">
+        <managed-bean-name>prescriptionView</managed-bean-name>
+        <managed-bean-class>PrescriptionView</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+        <managed-property>
+            <property-name>prescription</property-name>
+            <value>#{prescription}</value>
+        </managed-property>
     </managed-bean>
     <managed-bean id="medication">
         <managed-bean-name>medication</managed-bean-name>

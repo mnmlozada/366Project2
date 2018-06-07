@@ -16,9 +16,8 @@ import javax.faces.validator.ValidatorException;
 import javax.inject.Named;
 import org.omnifaces.util.Faces;
 
-@Named(value = "login")
+@javax.faces.bean.ManagedBean(name="login")
 @SessionScoped
-@ManagedBean
 public class Login implements Serializable {
 
     public static final int ADMIN = 0;

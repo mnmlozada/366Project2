@@ -9,21 +9,7 @@
             org.omnifaces.resourcehandler.CombinedResourceHandler
         </resource-handler>
     </application>
-        
-    <managed-bean id="selector_employee">
-        <managed-bean-name>selector_employee</managed-bean-name>
-        <managed-bean-class>SelectorEmployee</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope></managed-bean>
-    <managed-bean id="selector_admin">
-        <managed-bean-name>selector_admin</managed-bean-name>
-        <managed-bean-class>SelectorAdmin</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
-    <managed-bean id="selector_customer">
-        <managed-bean-name>selector_customer</managed-bean-name>
-        <managed-bean-class>SelectorCustomer</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
+
     <managed-bean id="util">
         <managed-bean-name>util</managed-bean-name>
         <managed-bean-class>Util</managed-bean-class>

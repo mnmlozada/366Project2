@@ -16,6 +16,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.component.UIInput;
+import org.omnifaces.util.Faces;
 
 @ManagedBean(name="staff")
 @SessionScoped
@@ -24,7 +25,7 @@ public class Staff implements Serializable {
     @ManagedProperty(value = "#{logins}")
     private Login logins;
 
-    public Login getLogins() {
+    public Login getLoginss() {
         return logins;
     }
 
@@ -109,6 +110,13 @@ public class Staff implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+    
+    public void clear() {
+        name = "";
+        position = "";
+        username = "";
+        password = "";
     }
 
     public Integer getStaffID() throws SQLException {
@@ -365,6 +373,7 @@ public class Staff implements Serializable {
     public void validateCurPass(FacesContext context, UIComponent component, Object value)
             throws ValidatorException, SQLException { 
         curPass = value.toString();
+        logins = (Login)Faces.getSessionAttribute("logins");
         if (!curPass.equals(logins.getPassword())) {
             FacesMessage errorMessage = new FacesMessage("Current password is not correct.");
             throw new ValidatorException(errorMessage);

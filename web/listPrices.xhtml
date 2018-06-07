@@ -51,7 +51,9 @@
                         
                         <p:column filterBy="#{r.price}" sortBy="#{r.price}" headerText="Price" filterMatchMode="contains"
                                   priority="4">
-                            <h:outputText value="$#{r.price}"/>
+                            <h:outputText value="#{r.price}">
+                                <f:convertNumber type="currency" currencySymbol="$" />
+                        </h:outputText>
                         </p:column>
                         
                         <p:column filterBy="#{r.occupied}" sortBy="#{r.occupied}" headerText="Occupied" filterMatchMode="contains"

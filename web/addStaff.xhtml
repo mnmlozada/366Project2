@@ -8,7 +8,9 @@
                 template="#{layoutMB.template}">
     
     <ui:param name="title" value="Add Staff Member"/>
-
+<f:metadata>
+    <f:viewAction action="#{staff.clear()}" />
+</f:metadata>
     <ui:define name="body">
         <p:panel styleClass="card box-info" >
             <h:form>

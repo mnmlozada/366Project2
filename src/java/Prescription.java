@@ -75,10 +75,10 @@ public class Prescription implements Serializable {
         }
 
         PreparedStatement ps = con.prepareStatement(
-            "select * from prescription " +
-                "join medication on drug_id = medication_id " +
-                "join staff on prescription.staff_id = staff.staff_id " +
-            "where reservation_id = " + res_id
+            "select *, medication.name as med_name, staff.name as staff_name from prescription "
+                    + "join medication on drug_id = medication_id "
+                    + "join staff on prescription.staff_id = staff.staff_id "
+                    + "where reservation_id = " + res_id
         );
 
         ResultSet result = ps.executeQuery();
@@ -93,9 +93,9 @@ public class Prescription implements Serializable {
             p.setStaff_id(result.getInt("staff_id"));
             m.setDrugID(result.getInt("drug_id"));
             m.setDuration(result.getInt("duration"));
-            m.setName(result.getString("medication.name"));
+            m.setName(result.getString("med_name"));
             m.setPrice(result.getDouble("price"));
-            p.setStaff_name(result.getString("staff.name"));
+            p.setStaff_name(result.getString("staff_name"));
             p.setMedication(m);
             //store all data into a List
             list.add(p);

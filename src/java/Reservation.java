@@ -260,7 +260,7 @@ public class Reservation implements Serializable {
         }
     }
     
-    public Reservation getAllByPatientID(int patientID) throws SQLException {
+    public List<Reservation> getAllByPatientID(int patientID) throws SQLException {
         Connection con = dbConnect.getConnection();
         if (con == null) {
             throw new SQLException("Can't get database connection");
@@ -273,7 +273,8 @@ public class Reservation implements Serializable {
         );
 
         ResultSet result = ps.executeQuery();
-        if (result.next()) {
+        List<Reservation> list = new ArrayList<>();
+        while (result.next()) {
             Reservation r = new Reservation();
             r.reservationId = result.getInt("reservation_id");
             r.roomId = result.getInt("room_num");
@@ -282,11 +283,9 @@ public class Reservation implements Serializable {
             r.checkedIn = result.getDate("checked_in");
             r.checkedOut = result.getDate("checked_out");
             
-            return r;
+            list.add(r);
         }
-        else {
-            return null;
-        }
+        return list;
     }
         
     public List<Reservation> getMyReservationList() throws SQLException {

@@ -586,6 +586,7 @@ public class Patient implements Serializable {
     public void validateCurPass(FacesContext context, UIComponent component, Object value)
             throws ValidatorException, SQLException { 
         curPass = value.toString();
+        logins = (Login)Faces.getSessionAttribute("logins");
         if (!curPass.equals(logins.getPassword())) {
             FacesMessage errorMessage = new FacesMessage("Current password is not correct.");
             throw new ValidatorException(errorMessage);

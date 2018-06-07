@@ -10,7 +10,13 @@
 
     <ui:define name="body">
         <p:panel styleClass="card no-border" style="min-height: 70px">
-            Patient <b>#{patient.name}</b> has been released! The total bill was <b>$#{reservation.total}</b>. The charge breakdown can be found below.
+            Patient <b>#{patient.name}</b> has been released! The total bill was 
+            
+            <b><h:outputText value="#{reservation.total}">
+                            <f:convertNumber type="currency" currencySymbol="$" />
+                        </h:outputText></b>. 
+                        
+           The charge breakdown can be found below.
         </p:panel>
         <hr/>
         <p:panel styleClass="card box-info" header="Cost Breakdown">
@@ -27,7 +33,9 @@
                         <h:outputText value="#{t.charge_description}"/>
                     </p:column>
                     <p:column headerText="Amount">
-                        <h:outputText value="$#{t.total}"/>
+                        <h:outputText value="#{t.total}">
+                            <f:convertNumber type="currency" currencySymbol="$" />
+                        </h:outputText>
                     </p:column>
 
                 </p:dataTable>

@@ -4,8 +4,13 @@
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://java.sun.com/jsf/core"
     template="#{layoutMB.template}"
 >    
+    
+  <f:metadata>
+    <f:viewAction action="#{medication.clear()}" />
+</f:metadata>
     <ui:param name="title" value="Add Medication"/>
     <ui:define name="body">
         <p:panel styleClass="card box-info" >

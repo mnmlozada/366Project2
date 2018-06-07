@@ -28,8 +28,10 @@
                                <td>#{reservation.roomId}</td>
                            </tr>
                            <tr>
-                               <th>Total Charged</th>
-                               <td>$#{reservation.total}</td>
+                               <th>Total Charged<br/><i>(If Released Already)</i></th>
+                               <td><h:outputText value="#{reservation.total}">
+                            <f:convertNumber type="currency" currencySymbol="$" />
+                        </h:outputText></td>
                            </tr>
                        </tbody>
                 </table>
@@ -50,7 +52,9 @@
                         <h:outputText value="#{t.charge_description}"/>
                     </p:column>
                     <p:column headerText="Amount">
-                        <h:outputText value="$#{t.total}"/>
+                        <h:outputText value="#{t.total}">
+                            <f:convertNumber type="currency" currencySymbol="$" />
+                        </h:outputText>
                     </p:column>
 
                 </p:dataTable>
@@ -65,13 +69,15 @@
                         <h:outputText value="#{p.staff_name}"/>
                     </p:column>
                     <p:column headerText="Medication Name">
-                        <h:outputText value="#{p.med.name}"/>
+                        <h:outputText value="#{p.medication.name}"/>
                     </p:column>
                     <p:column headerText="Price">
-                        <h:outputText value="#{p.med.price}"/>
+                        <h:outputText value="#{p.medication.price}">
+                            <f:convertNumber type="currency" currencySymbol="$" />
+                        </h:outputText>
                     </p:column>
-                    <p:column headerText="Duration">
-                        <h:outputText value="$#{p.med.duration}"/>
+                    <p:column headerText="Duration (Days)">
+                        <h:outputText value="#{p.medication.duration}"/>
                     </p:column>
 
                 </p:dataTable>

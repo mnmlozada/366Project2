@@ -11,6 +11,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
+import org.omnifaces.util.Faces;
 
 @javax.faces.bean.ManagedBean(name="room")
 @SessionScoped
@@ -266,6 +267,8 @@ public class Room implements Serializable {
         
         con.commit();
         
+        Faces.setSessionAttribute("room", new Room());
+        
         return "/listPrices.xhtml?faces-redirect=true";
     }
     
@@ -287,6 +290,8 @@ public class Room implements Serializable {
         
         con.commit();
         
+        Faces.setSessionAttribute("room", new Room());
+        
         return "/listPrices.xhtml?faces-redirect=true";
     }
     
@@ -306,6 +311,8 @@ public class Room implements Serializable {
         preparedStatement.executeUpdate();
         
         con.commit();
+        
+        Faces.setSessionAttribute("room", new Room());
         
         return "/listPrices.xhtml?faces-redirect=true";
     }

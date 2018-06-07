@@ -36,7 +36,10 @@
                     <p:outputLabel for="health_infoHeight" value="Height (Inches)"/>
                     <p:inputText value="#{health_info.height}" required ="true"
                     requiredMessage="Your must enter patient height"
-                    id="health_infoHeight"/>
+                    validatorMessage="You must enter height in inches"
+                    id="health_infoHeight">
+                    <f:validateLongRange minimum="24" maximum="100" />
+                    </p:inputText>
                     <p:message id="msg1" for="health_infoHeight"/>
                     
                     <p:outputLabel for="health_infoWeight" value="Weight (Pounds)"/>

@@ -56,6 +56,10 @@ public class Medication implements Serializable {
         this.duration = duration;
     }
     
+     public void clear() {
+        Faces.setSessionAttribute("medication", new Medication());
+    }
+    
     public String createMedication() throws SQLException {
         Connection con = dbConnect.getConnection();
         if (con == null) {

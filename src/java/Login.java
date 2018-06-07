@@ -68,8 +68,13 @@ public class Login implements Serializable {
         this.password = password;
     }
     
-    public String logout() {
-        return "logout";
+    public void logout() {
+        Faces.setSessionAttribute("patient", new Patient());
+        Faces.setSessionAttribute("reservation", new Reservation());
+        login = "";
+        password = "";
+        type = -1;
+        //return "logout";
     }
 
     public void validate(FacesContext context, UIComponent component, Object value)
